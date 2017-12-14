@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.deerlive.zhuawawa.MainActivity;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.activity.LoginActivity;
+import com.deerlive.zhuawawa.activity.WelcomeLoginActivity;
 import com.deerlive.zhuawawa.base.BaseActivity;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
 
@@ -60,7 +61,8 @@ public class SplashActivity extends BaseActivity {
             @Override
             public void run() {
                 if(SPUtils.getInstance().contains("token")){
-                    ActivityUtils.startActivity(MainActivity.class);
+                    //ActivityUtils.startActivity(MainActivity.class);
+                    ActivityUtils.startActivity(WelcomeLoginActivity.class);
                 }else{
                     ActivityUtils.startActivity(LoginActivity.class);
                 }

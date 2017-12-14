@@ -58,6 +58,6 @@
     <string name="play_yes_tips">您的手气真的是太好了，运气爆棚啊</string>
     <string name="play_zhuazhu_tips">果真不负众望，真的抓到了！</string>
     <string name="play_meizhuazhu_tips">很遗憾，真的没抓到！</string>
-   <!-- <string name="agora_appid">f4b66e7837934e7aaaecd05cb38926da</string>-->
+    <!-- <string name="agora_appid">f4b66e7837934e7aaaecd05cb38926da</string>-->
     <string name="agora_appid">33825c2e79934e2791c4e5ff53714b81</string>
 </resources>
