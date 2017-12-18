@@ -16,9 +16,9 @@
     <ImageView
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="22dp"
         android:layout_centerInParent="true"
-        android:src="@mipmap/index_top"
+        android:src="@drawable/index_top"
         />
     <RelativeLayout
         android:layout_gravity="right"

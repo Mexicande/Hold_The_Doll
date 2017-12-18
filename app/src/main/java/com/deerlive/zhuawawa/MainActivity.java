@@ -233,7 +233,6 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onItemClick(int position) {
 
-                LogUtils.d("mBanner===",mBannerData.get(position).getJump()+"");
                 if(!" ".equals(mBannerData.get(position).getJump())){
                     Banner b = mBannerData.get(position);
                     Bundle temp = new Bundle();

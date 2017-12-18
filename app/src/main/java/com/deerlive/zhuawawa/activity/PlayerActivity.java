@@ -228,7 +228,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     private void initScreenRecorder() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
         }
     }
