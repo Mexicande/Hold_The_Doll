@@ -226,6 +226,9 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
         mImageCaozuoUp.setOnTouchListener(this);
     }
 
+    /**
+     * 截屏
+     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     private void initScreenRecorder() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

@@ -25,7 +25,7 @@
             />
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="170dp"
         android:orientation="vertical"
@@ -33,6 +33,44 @@
         android:layout_margin="20dp"
         android:background="@drawable/user_center_bg">
         <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_height="28dp">
+            <com.deerlive.zhuawawa.view.supertextview.SuperButton
+                android:id="@+id/bt_invite"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_height="25dp"
+                app:sCornersRadius="5dp"
+                android:paddingRight="7dp"
+                android:paddingLeft="7dp"
+                app:sSolidColor="@color/green_text"
+                android:textSize="13sp"
+                android:textColor="#FEFEFE"
+                android:layout_gravity="center_horizontal"
+                android:text="邀请好友"
+                />
+            <com.deerlive.zhuawawa.view.supertextview.SuperButton
+                android:id="@+id/bt_edit"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_height="25dp"
+                app:sCornersRadius="5dp"
+                android:layout_marginLeft="10dp"
+                android:drawablePadding="4dp"
+                android:drawableLeft="@mipmap/iv_edit"
+                android:paddingRight="7dp"
+                android:paddingLeft="7dp"
+                app:sSolidColor="@color/green_text"
+                android:textSize="13sp"
+                android:textColor="#FEFEFE"
+                android:layout_gravity="center_horizontal"
+                android:text="编辑"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/layout_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -55,7 +93,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/text_color"
                     android:textSize="16sp"/>
-                <TextView
+             <!--   <TextView
                     android:id="@+id/user_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -70,12 +108,44 @@
                     android:text=""
                     android:layout_marginTop="2dp"
                     android:textColor="@color/color_shouhuo_text"
+                    android:textSize="12sp"/>-->
+                <TextView
+                    android:id="@+id/user_signature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="用户签名，我的精致只为自己"
+                    android:layout_marginTop="2dp"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/color_shouhuo_text"
                     android:textSize="12sp"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/user_fans"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="粉丝: 260"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/color_shouhuo_text"
+                        android:textSize="12sp"/>
+                    <TextView
+                        android:layout_marginLeft="20dp"
+                        android:id="@+id/user_attention"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="关注: 260"
+                        android:layout_marginTop="2dp"
+                        android:textColor="@color/color_shouhuo_text"
+                        android:textSize="12sp"/>
+                </LinearLayout>
             </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
+            android:layout_below="@id/layout_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -109,7 +179,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text=""
+                        android:text="0"
                         android:textSize="11sp"
                         app:innnerColor="@android:color/white"/>
                 </RelativeLayout>
@@ -144,7 +214,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="10dp"
-                        android:text="2"
+                        android:text="0"
                         android:textSize="11sp"
                         android:gravity="center"
                         app:innnerColor="@android:color/white"/>
@@ -155,7 +225,7 @@
         </LinearLayout>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
 
     <LinearLayout
@@ -164,7 +234,40 @@
         android:orientation="vertical"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="14dp"
+            android:onClick="mesgList">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/iv_other_login"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_weight="1"
+                android:id="@+id/tv_otherLogin"
+                android:text="@string/other_login"
+                android:textColor="@color/center_black"
+                android:textSize="12sp"
+                />
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/iv_arrow"/>
 
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider"
+            android:background="@color/user_center_lion"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="52dp"

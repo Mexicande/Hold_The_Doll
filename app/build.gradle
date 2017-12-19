@@ -17,7 +17,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 21
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.1.0"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         ndk {
@@ -93,7 +93,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
-
     compile(name: 'LiteAVSDK_Player', ext: 'aar')
     compile files('libs/alipaySdk-20160516.jar')
     compile 'com.android.support:appcompat-v7:25.3.1'
@@ -113,5 +112,11 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.tencent.bugly:crashreport:latest.release'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'io.reactivex:rxjava:1.2.3'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.squareup.okhttp3:okhttp:3.4.2'
     testCompile 'junit:junit:4.12'
+    compile files('libs/open_sdk_r5923_lite.jar')
+    compile files('libs/weiboSDKCore_3.1.4.jar')
 }

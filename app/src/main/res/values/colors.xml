@@ -22,7 +22,8 @@
     <color name="soild_color">#D6FED1</color>
     <color name="green_lion">#9FDF97</color>
     <color name="green_press">#9FDF97</color>
-
+    <color name="count_down">#42D163</color>
+    
     <color name="product_limit">#999999</color>
     
     <color name="user_center_lion">#B5F0AD</color>
@@ -33,4 +34,10 @@
     <color name="common_pressed">#20000000</color>  <!--白色背景按下去的颜色-->
     <color name="line">#e8e8e8</color>
     <color name="cash_line">#EBE8E8</color>
+    <color name="tran_withe">#000000</color>
+
+    <color name="editext_hintcolor">#BBB9B9</color>
+    <color name="gay">#999999</color>
+    <color name="edtext_bg">#689375</color>
+
 </resources>

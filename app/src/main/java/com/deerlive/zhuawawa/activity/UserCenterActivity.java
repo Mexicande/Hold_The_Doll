@@ -30,8 +30,8 @@ public class UserCenterActivity extends BaseActivity {
     TextView mUserWqnum;
     @Bind(R.id.user_all_num)
     TextView mUserAllNum;
-    @Bind(R.id.user_id)
-    TextView mUserId;
+   /* @Bind(R.id.user_id)
+    TextView mUserId;*/
     private String mmUserName;
     private String mmAvator;
     private String mmBalance;
@@ -67,7 +67,7 @@ public class UserCenterActivity extends BaseActivity {
                 .error(R.mipmap.logo)
                 .transform(new GlideCircleTransform(this))
                 .into(mUserAvator);
-        mUserId.setText("ID:"+mId);
+       // mUserId.setText("ID:"+mId);
     }
 
     private void getUserInfo() {

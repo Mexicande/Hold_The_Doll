@@ -16,6 +16,7 @@
     <string name="setting">设置</string>
     <string name="userCenter">个人中心</string>
     <string name="message">消息通知</string>
+    <string name="other_login">关联第三方登录</string>
     <string name="set_helps">游戏帮助</string>
     <string name="set_yaoqing">邀请奖励</string>
     <string name="set_yaoqingma">输入邀请码</string>
@@ -58,6 +59,13 @@
     <string name="play_yes_tips">您的手气真的是太好了，运气爆棚啊</string>
     <string name="play_zhuazhu_tips">果真不负众望，真的抓到了！</string>
     <string name="play_meizhuazhu_tips">很遗憾，真的没抓到！</string>
+    <string name="login_title">登录快抓娃娃机</string>
+
     <!-- <string name="agora_appid">f4b66e7837934e7aaaecd05cb38926da</string>-->
     <string name="agora_appid">33825c2e79934e2791c4e5ff53714b81</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name">ShareUtil</string>
+    <string name="vista_share_title">分享</string>
 </resources>

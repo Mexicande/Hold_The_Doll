@@ -16,7 +16,7 @@
         android:id="@+id/layout_login"
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
-        android:layout_marginBottom="20dp"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.deerlive.zhuawawa.view.supertextview.SuperButton
@@ -33,20 +33,27 @@
             android:layout_gravity="center_horizontal"
             android:text="快抓娃娃"
             />
-        <com.deerlive.zhuawawa.view.supertextview.SuperButton
-            android:id="@+id/bt_unLogin"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_height="28dp"
-            app:sCornersRadius="30dp"
-            android:paddingRight="12dp"
-            android:paddingLeft="12dp"
-            app:sSolidColor="@color/shape3"
-            android:textSize="13sp"
-            android:textColor="#FEFEFE"
-            android:layout_gravity="center_horizontal"
-            android:text="稍后再说"
-            />
+        <RelativeLayout
+            android:id="@+id/layout_unLogin"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <com.deerlive.zhuawawa.view.supertextview.SuperButton
+                android:id="@+id/bt_unLogin"
+                android:layout_marginBottom="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_height="28dp"
+                app:sCornersRadius="30dp"
+                android:paddingRight="12dp"
+                android:paddingLeft="12dp"
+                app:sSolidColor="@color/shape3"
+                android:textSize="13sp"
+                android:textColor="#FEFEFE"
+                android:layout_gravity="center_horizontal"
+                android:text="稍后再说"
+                />
+        </RelativeLayout>
     </LinearLayout>
 
 </RelativeLayout>

@@ -2,22 +2,28 @@ package com.deerlive.zhuawawa.activity;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.deerlive.zhuawawa.R;
+import com.deerlive.zhuawawa.view.LoginFragment;
 import com.deerlive.zhuawawa.view.supertextview.SuperButton;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class WelcomeLoginActivity extends AppCompatActivity {
+public class WelcomeLoginActivity extends AppCompatActivity implements LoginFragment.onDismiassListener {
 
     @Bind(R.id.iv_login_top)
     ImageView ivLoginTop;
@@ -27,8 +33,20 @@ public class WelcomeLoginActivity extends AppCompatActivity {
     SuperButton btLogin;
     @Bind(R.id.bt_unLogin)
     SuperButton btUnLogin;
+    @Bind(R.id.layout_unLogin)
+    RelativeLayout layoutUnLogin;
     private int height;
     private int width;
+
+    private int un_hight;
+    private int un_width;
+
+    private int heightPixels;
+
+    private int bt_hight;
+
+    private LoginFragment loginFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +61,12 @@ public class WelcomeLoginActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
 
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+         heightPixels = metric.heightPixels;   // 屏幕高度（像素）
+
+
+
         ivLoginTop.post(new Runnable() {
 
             @Override
@@ -52,46 +76,90 @@ public class WelcomeLoginActivity extends AppCompatActivity {
             }
         });
 
+        btUnLogin.post(new Runnable() {
+            @Override
+            public void run() {
+                un_width = btUnLogin.getWidth();// 获取宽度
+                un_hight = btUnLogin.getHeight();// 获取高度
+            }
+        });
+
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                ValueAnimator animator = ValueAnimator.ofInt(0,-height);
+                ValueAnimator animator = ValueAnimator.ofInt(0, -height);
 
                 animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimator animation) {
-                        int curValue = (int)animation.getAnimatedValue();
-                        ivLoginTop.layout(ivLoginTop.getLeft(),curValue,ivLoginTop.getRight(),curValue+ivLoginTop.getHeight());
+                        int curValue = (int) animation.getAnimatedValue();
+                        ivLoginTop.layout(ivLoginTop.getLeft(), curValue, ivLoginTop.getRight(), curValue + ivLoginTop.getHeight());
                     }
                 });
-                animator.setDuration(1000);
+                animator.setDuration(700);
                 animator.start();
 
-              /*  ValueAnimator animator = doRepeatAnim();
-                //克隆一个新的 ValueAnimator，然后开始动画
-                ValueAnimator newAnimator = animator.clone();
-                newAnimator.setStartDelay(1000);
-                newAnimator.start();*/
+
+              btLogin.postDelayed(new Runnable() {
+                  @Override
+                  public void run() {
+                      btLogin.post(new Runnable() {
+
+                          @Override
+                          public void run() {
+                              width = btLogin.getWidth();// 获取宽度
+                              bt_hight = btLogin.getHeight();// 获取高度
+                          }
+                      });
+                      ValueAnimator loginanimator = ValueAnimator.ofInt(bt_hight, heightPixels);
+
+                      loginanimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                          @Override
+                          public void onAnimationUpdate(ValueAnimator animation) {
+                              int curValue = (int) animation.getAnimatedValue();
+                              btLogin.layout(btLogin.getLeft(), curValue, btLogin.getRight(), curValue + btLogin.getHeight());
+                          }
+                      });
+                      loginanimator.setDuration(600);
+                      loginanimator.start();
+                      loginanimator.addListener(mAnimationListener);
+                  }
+              },200);
+
+
+                ValueAnimator animatorDown = ValueAnimator.ofInt(un_hight, heightPixels);
+
+                animatorDown.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        int curValue = (int) animation.getAnimatedValue();
+                        btUnLogin.layout(btUnLogin.getLeft(), curValue, btUnLogin.getRight(), curValue + btUnLogin.getHeight());
+                    }
+                });
+                animatorDown.setDuration(700);
+                animatorDown.start();
+
+                //animatorDown.addListener(mAnimationListener);
+
             }
         });
-
-
-    }
-    private ValueAnimator doRepeatAnim(){
-        ValueAnimator animator = ValueAnimator.ofInt(0,400);
-
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+     /*   btUnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                int curValue = (int)animation.getAnimatedValue();
-                ivLoginTop.layout(ivLoginTop.getLeft(),curValue,ivLoginTop.getRight(),curValue+ivLoginTop.getHeight());
+            public void onClick(View v) {
+                ValueAnimator animator = ValueAnimator.ofInt(-height, 0);
+
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator animation) {
+                        int curValue = (int) animation.getAnimatedValue();
+                        ivLoginTop.layout(ivLoginTop.getLeft(), curValue, ivLoginTop.getRight(), curValue + ivLoginTop.getHeight());
+                    }
+                });
+                animator.setDuration(300);
+                animator.start();
             }
-        });
-        animator.setDuration(1000);
-        /*animator.setRepeatMode(ValueAnimator.REVERSE);
-        animator.setRepeatCount(ValueAnimator.INFINITE);*/
-        return animator;
+        });*/
     }
 
     private Animator.AnimatorListener mAnimationListener = new Animator.AnimatorListener() {
@@ -102,6 +170,8 @@ public class WelcomeLoginActivity extends AppCompatActivity {
         }
 
         public void onAnimationEnd(Animator animation) {
+            loginFragment=new LoginFragment();
+            loginFragment.show(getFragmentManager(),"1212");
 
         }
 
@@ -113,4 +183,46 @@ public class WelcomeLoginActivity extends AppCompatActivity {
 
         }
     };
+
+
+
+    @Override
+    public void verify() {
+        ValueAnimator animator = ValueAnimator.ofInt(-height, 0);
+
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int curValue = (int) animation.getAnimatedValue();
+                ivLoginTop.layout(ivLoginTop.getLeft(), curValue, ivLoginTop.getRight(), curValue + ivLoginTop.getHeight());
+            }
+        });
+        animator.setDuration(500);
+        animator.start();
+
+        ValueAnimator animatorDown = ValueAnimator.ofInt(heightPixels, un_hight);
+
+        animatorDown.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int curValue = (int) animation.getAnimatedValue();
+                btUnLogin.layout(btUnLogin.getLeft(), curValue, btUnLogin.getRight(), curValue + btUnLogin.getHeight());
+            }
+        });
+        animatorDown.setDuration(600);
+        animatorDown.start();
+
+        ValueAnimator loginanimator = ValueAnimator.ofInt(heightPixels, bt_hight-50);
+
+        loginanimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int curValue = (int) animation.getAnimatedValue();
+                btLogin.layout(btLogin.getLeft(), curValue, btLogin.getRight(), curValue + btLogin.getHeight());
+            }
+        });
+        loginanimator.setDuration(600);
+        loginanimator.start();
+
+    }
 }
