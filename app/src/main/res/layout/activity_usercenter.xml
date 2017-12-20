@@ -93,7 +93,7 @@
                     android:textStyle="bold"
                     android:textColor="@color/text_color"
                     android:textSize="16sp"/>
-             <!--   <TextView
+                <TextView
                     android:id="@+id/user_id"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -101,15 +101,8 @@
                     android:layout_marginTop="2dp"
                     android:textColor="@color/color_shouhuo_text"
                     android:textSize="12sp"/>
-                <TextView
-                    android:id="@+id/user_all_num"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:layout_marginTop="2dp"
-                    android:textColor="@color/color_shouhuo_text"
-                    android:textSize="12sp"/>-->
-                <TextView
+
+               <!-- <TextView
                     android:id="@+id/user_signature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -139,7 +132,7 @@
                         android:layout_marginTop="2dp"
                         android:textColor="@color/color_shouhuo_text"
                         android:textSize="12sp"/>
-                </LinearLayout>
+                </LinearLayout>-->
             </LinearLayout>
 
         </LinearLayout>

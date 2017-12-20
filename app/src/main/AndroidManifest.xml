@@ -120,35 +120,30 @@
                 <data android:scheme="wx8bf15a7269bafb69" />
             </intent-filter>
         </activity>
-        <!--QQ登陆-->
+        <!-- QQ登陆 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
-            android:noHistory="true"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent1106532393" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.tencent.connect.common.AssistActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            />
-        <!--Sina-->
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- Sina -->
         <activity
             android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
             android:configChanges="keyboardHidden|orientation"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            >
-        </activity>
-        <activity-alias
-            android:name="wxapi.WXEntryActivity"
-            android:exported="true"
-            android:targetActivity=".utils.shareutils._ShareActivity"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
@@ -160,7 +155,7 @@
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
             android:exported="false"
-            android:theme="@style/MyDialogStyle"/>
+            android:theme="@style/MyDialogStyle" />
 
         <!-- Required SDK核心功能 -->
         <activity
@@ -247,7 +242,23 @@
         <meta-data
             android:name="JPUSH_APPKEY"
             android:value="3f41585a44f8cc5a3b8aeb5b" /> <!-- </>值来自开发者平台取得的AppKey -->
-        <activity android:name=".activity.WelcomeLoginActivity"/>
+        <activity android:name=".activity.WelcomeLoginActivity" />
+        <activity
+            android:name=".utils.shareutils._ShareActivity"
+            android:launchMode="singleTask"
+            android:taskAffinity="com.deerlive.zhuawawa"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activity.FillInformation" />
+        <activity
+            android:name=".activity.EditTextActivity"
+            android:theme="@style/TranslucentTheme" />
+        <activity android:name=".activity.InviteActivity"></activity>
     </application>
 
 </manifest>

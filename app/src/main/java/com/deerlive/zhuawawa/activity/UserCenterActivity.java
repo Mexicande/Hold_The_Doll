@@ -28,8 +28,8 @@ public class UserCenterActivity extends BaseActivity {
     TextView mUserName;
     @Bind(R.id.user_wqnum)
     TextView mUserWqnum;
-    @Bind(R.id.user_all_num)
-    TextView mUserAllNum;
+   /* @Bind(R.id.user_all_num)
+    TextView mUserAllNum;*/
    /* @Bind(R.id.user_id)
     TextView mUserId;*/
     private String mmUserName;
@@ -84,7 +84,7 @@ public class UserCenterActivity extends BaseActivity {
                 SPUtils.getInstance().put("user_nicename",userinfo.getString("user_nicename"));
                 SPUtils.getInstance().put("signaling_key",userinfo.getString("signaling_key"));
                 mUserWqnum.setText(userinfo.getString("not_token_num"));
-                mUserAllNum.setText(getResources().getString(R.string.zq_all_num)+userinfo.getString("all_num"));
+               // mUserAllNum.setText(getResources().getString(R.string.zq_all_num)+userinfo.getString("all_num"));
                 initData();
             }
 

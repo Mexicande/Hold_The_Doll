@@ -12,7 +12,7 @@
     <color name="center_black">#031107</color>
     
     <color name="message_red">#F84242</color>
-
+    <color name="bg">#D6FED1</color>
     <color name="color_shouhuo_text">#116727</color>
     <color name="green_text">#199739</color>
     <color name="shape3">#3CCE62</color>

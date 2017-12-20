@@ -2,8 +2,6 @@ package com.deerlive.zhuawawa.activity;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,10 +12,9 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.deerlive.zhuawawa.R;
-import com.deerlive.zhuawawa.view.LoginFragment;
+import com.deerlive.zhuawawa.fragment.LoginFragment;
 import com.deerlive.zhuawawa.view.supertextview.SuperButton;
 
 import butterknife.Bind;

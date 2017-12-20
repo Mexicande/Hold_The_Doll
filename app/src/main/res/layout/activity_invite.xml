@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    tools:context="com.deerlive.zhuawawa.activity.InviteActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:layout_width="43dp"
+            android:layout_height="23dp"
+            android:paddingRight="20dp"
+            android:foreground = "?attr/selectableItemBackground"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/player_back"
+            android:onClick="goBack"/>
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+            android:text="邀请好友"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/text_color"
+            android:textSize="20sp"
+            />
+    </android.support.v7.widget.Toolbar>
+    <com.deerlive.zhuawawa.view.supertextview.SuperTextView
+        android:id="@+id/checkbox_yinxiao"
+        android:elevation="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:sTopDividerLineMarginLR="10dp"
+        app:sDividerLineHeight="1dp"
+        app:sLeftIconRes="@drawable/set_bg_yx"
+        android:textSize="16sp"
+        app:sLeftIconHeight="20dp"
+        app:sDividerLineColor="@color/green_lion"
+        app:sDividerLineType="top"
+        app:sLeftTextColor="@color/text_color"
+        app:sLeftIconWidth="20dp"
+        app:sUseShape="true"
+        app:sShapeSelectorNormalColor="@color/bg"
+        app:sLeftTextSize="13dp"
+        app:sLeftTextString="@string/set_bg_yinxiao" />
+</LinearLayout>

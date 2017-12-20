@@ -60,12 +60,18 @@
     <string name="play_zhuazhu_tips">果真不负众望，真的抓到了！</string>
     <string name="play_meizhuazhu_tips">很遗憾，真的没抓到！</string>
     <string name="login_title">登录快抓娃娃机</string>
+    <string name="fillinfor_title">绑定手机号</string>
 
     <!-- <string name="agora_appid">f4b66e7837934e7aaaecd05cb38926da</string>-->
     <string name="agora_appid">33825c2e79934e2791c4e5ff53714b81</string>
+    <string name="qq_id">1106532393</string>
+    <string name="qq_appKey">4YHpf10cmKLrvTaN</string>
+    <string name="wechat_id">wx8bf15a7269bafb69</string>
+    <string name="wechat_key">e051831188f1181e89ae75facc19d6ce</string>
+    <string name="sina_id">1668377527</string>
+    <string name="sina_key">b6b0e0903f4c9cd58a1535130cf477e1</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="app_name">ShareUtil</string>
     <string name="vista_share_title">分享</string>
 </resources>

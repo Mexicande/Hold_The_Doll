@@ -1,4 +1,4 @@
-package com.deerlive.zhuawawa.view;
+package com.deerlive.zhuawawa.fragment;
 
 
 import android.app.Dialog;
@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.ActivityUtils;
@@ -27,6 +28,14 @@ import com.deerlive.zhuawawa.MainActivity;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
+import com.deerlive.zhuawawa.utils.shareutils.LoginUtil;
+import com.deerlive.zhuawawa.utils.shareutils.ShareConfig;
+import com.deerlive.zhuawawa.utils.shareutils.ShareManager;
+import com.deerlive.zhuawawa.utils.shareutils.login.LoginListener;
+import com.deerlive.zhuawawa.utils.shareutils.login.LoginPlatform;
+import com.deerlive.zhuawawa.utils.shareutils.login.LoginResult;
+import com.deerlive.zhuawawa.utils.shareutils.login.result.QQToken;
+import com.deerlive.zhuawawa.utils.shareutils.login.result.QQUser;
 import com.hss01248.dialog.StyledDialog;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
@@ -75,7 +84,7 @@ public class LoginFragment extends DialogFragment {
     private JSONObject params;
     Dialog mLoadingDialog;
 
-    private Tencent mTencent;
+    private LoginListener mLoginListener;
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -96,45 +105,11 @@ public class LoginFragment extends DialogFragment {
             case R.id.iv_Sina:
                 break;
             case R.id.iv_QQ:
-                loginQQ();
+                LoginUtil.login(getActivity(), LoginPlatform.QQ, mLoginListener);
                 break;
             case R.id.iv_LinkedIn:
                 break;
         }
-    }
-
-    /**
-     * qq登陆
-     */
-    private void loginQQ() {
-
-       mTencent= Tencent.createInstance("1106532393", getActivity().getApplicationContext());
-
-        if (!mTencent.isSessionValid())
-        {
-            mTencent.login(getActivity(), "get_user_inf", new IUiListener() {
-                @Override
-                public void onComplete(Object o) {
-                    dismiss();
-                    ActivityUtils.startActivity(MainActivity.class);
-                    getActivity().finish();
-                    LogUtils.d("qqLogin==",o.toString());
-                }
-
-                @Override
-                public void onError(UiError uiError) {
-                    LogUtils.d("qqLogin==","uiError="+uiError.errorCode+"==error_message="+uiError.errorMessage);
-
-                }
-
-                @Override
-                public void onCancel() {
-
-
-                }
-            });
-        }
-
     }
 
     public interface onDismiassListener {
@@ -171,9 +146,64 @@ public class LoginFragment extends DialogFragment {
         window.setAttributes(lp);
         mPlatForm = ShareSDK.getPlatform(Wechat.NAME);
         mHandler = new MyHandler();
+        ShareConfig config = ShareConfig.instance()
+                .qqId(getString(R.string.qq_id))
+                .weiboId(getString(R.string.sina_id))
+                .wxId(getString(R.string.wechat_id))
+                .weiboRedirectUrl("XXXXXX")
+                .wxSecret(getString(R.string.wechat_key));
+        ShareManager.init(config);
+        setLisenter();
+
         return dialog;
 
     }
+
+    private void setLisenter() {
+
+        mLoginListener = new LoginListener() {
+            @Override
+            public void loginSuccess(LoginResult result) {
+                Toast.makeText(getActivity(),
+                        result.getUserInfo() != null ? result.getUserInfo().getNickname()
+                                : "" + "登录成功", Toast.LENGTH_SHORT).show();
+                // 处理result
+                switch (result.getPlatform()) {
+                    case LoginPlatform.QQ:
+                        QQUser user = (QQUser) result.getUserInfo();
+                        QQToken token = (QQToken) result.getToken();
+                        params = new JSONObject();
+                        params.put("name",user.getNickname());
+                        params.put("from","qq");
+                        params.put("head_img",user.getHeadImageUrl());
+                        params.put("openid",user.getOpenId());
+                        params.put("access_token",token.getAccessToken());
+                        params.put("qudao",Api.QUDAO);
+                        mHandler.sendEmptyMessage(1);
+                        break;
+                    case LoginPlatform.WEIBO:
+                        // 处理信息
+                        break;
+                    case LoginPlatform.WX:
+                        break;
+                }
+                dismiss();
+                ActivityUtils.startActivity(MainActivity.class);
+                getActivity().finish();
+            }
+
+            @Override
+            public void loginFailure(Exception e) {
+                Toast.makeText(getActivity(), "登录失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void loginCancel() {
+                Toast.makeText(getActivity(), "登录取消", Toast.LENGTH_SHORT).show();
+            }
+        };
+
+}
 
     @Override
     public void onDismiss(DialogInterface dialog) {
@@ -208,11 +238,9 @@ public class LoginFragment extends DialogFragment {
             mLoadingDialog.dismiss();
 
         }
-
         @Override
         public void onCancel(Platform platform, int i) {
             mLoadingDialog.dismiss();
-
         }
 
     };
@@ -252,9 +280,4 @@ public class LoginFragment extends DialogFragment {
     }
 
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        mTencent.onActivityResult(requestCode, resultCode, data);
-    }
 }

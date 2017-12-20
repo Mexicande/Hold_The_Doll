@@ -35,13 +35,13 @@ public class UserCenterOtherActivity extends BaseActivity {
     ImageView mUserAvator;
     @Bind(R.id.user_name)
     TextView mUserName;
-    @Bind(R.id.user_all_num)
-    TextView mUserAllNum;
-
+/*    @Bind(R.id.user_all_num)
+    TextView mUserAllNum;*/
+/*
     @Bind(R.id.refreshLayout)
     SmartRefreshLayout mRefreshLayout;
     @Bind(R.id.recyclerview)
-    RecyclerView mRecyclerView;
+    RecyclerView mRecyclerView;*/
     private ArrayList<DanmuMessage> mListData = new ArrayList();
     private RecordZqRecyclerListAdapter mAdapter = new RecordZqRecyclerListAdapter(this,mListData);
 
@@ -62,11 +62,11 @@ public class UserCenterOtherActivity extends BaseActivity {
         }
         mUserId =  data.getString("userId");
         getUserInfo(mUserId);
-        mRefreshLayout.autoRefresh();
-        initGameList();
+       // mRefreshLayout.autoRefresh();
+       // initGameList();
     }
 
-    private void initGameList() {
+   /* private void initGameList() {
         final LinearLayoutManager manager = new LinearLayoutManager(this);
         manager.setOrientation(LinearLayoutManager.VERTICAL);
         //mRecyclerView.addItemDecoration(new SpaceItemDecoration(SizeUtils.dp2px(10)));
@@ -84,8 +84,8 @@ public class UserCenterOtherActivity extends BaseActivity {
                 getGameData(mListData.size());
             }
         });
-    }
-
+    }*/
+/*
     private void getGameData(final int limit_begin) {
         JSONObject params = new JSONObject();
         params.put("token",mToken);
@@ -98,12 +98,12 @@ public class UserCenterOtherActivity extends BaseActivity {
                 if(limit_begin == 0){
                     mListData.clear();
                 }
-                if(mRefreshLayout.isRefreshing()){
+               *//* if(mRefreshLayout.isRefreshing()){
                     mRefreshLayout.finishRefresh();
                 }
                 if(mRefreshLayout.isLoading()){
                     mRefreshLayout.finishLoadmore();
-                }
+                }*//*
                 JSONArray list = data.getJSONArray("info");
                 for (int i = 0; i < list.size(); i++) {
                     DanmuMessage g = new DanmuMessage();
@@ -120,15 +120,15 @@ public class UserCenterOtherActivity extends BaseActivity {
             @Override
             public void requestFailure(int code, String msg) {
                 toast(msg);
-                if(mRefreshLayout.isRefreshing()){
+              *//*  if(mRefreshLayout.isRefreshing()){
                     mRefreshLayout.finishRefresh();
                 }
                 if(mRefreshLayout.isLoading()){
                     mRefreshLayout.finishLoadmore();
-                }
+                }*//*
             }
         });
-    }
+    }*/
 
     private void getUserInfo(String userId) {
         JSONObject p = new JSONObject();
@@ -138,7 +138,7 @@ public class UserCenterOtherActivity extends BaseActivity {
             @Override
             public void requestSuccess(int code, JSONObject data) {
                 JSONObject userinfo = data.getJSONObject("data");
-                mUserAllNum.setText(getResources().getString(R.string.zq_all_num)+userinfo.getString("all_num"));
+               // mUserAllNum.setText(getResources().getString(R.string.zq_all_num)+userinfo.getString("all_num"));
                 mUserName.setText(userinfo.getString("user_nicename"));
                 Glide.with(UserCenterOtherActivity.this).load(userinfo.getString("avatar"))
                         .error(R.mipmap.logo)

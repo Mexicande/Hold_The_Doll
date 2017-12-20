@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context="com.deerlive.zhuawawa.view.LoginFragment">
+    tools:context="com.deerlive.zhuawawa.fragment.LoginFragment">
 
    <android.support.v7.widget.Toolbar
        android:layout_width="match_parent"
@@ -28,8 +28,8 @@
         android:id="@+id/et_phone"
         android:inputType="phone"
         android:layout_marginTop="100dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:background="@null"
         android:hint="请输入手机号码"
         android:maxLength="11"
@@ -41,8 +41,8 @@
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:background="@color/edtext_bg"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_height="0.8dp"/>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -51,7 +51,7 @@
         <Button
             android:id="@+id/bt_getCode"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="30dp"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
@@ -67,9 +67,9 @@
             android:inputType="number"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="20dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="30dp"
             android:layout_marginBottom="2dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="30dp"
             android:hint="请输入手机验证码"
             android:textSize="16sp"
             android:maxLength="4"
@@ -84,8 +84,8 @@
         android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:background="@color/edtext_bg"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
         android:layout_height="0.8dp"/>
     <TextView
         android:layout_width="wrap_content"
