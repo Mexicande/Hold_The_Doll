@@ -112,7 +112,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="wx8bf15a7269bafb69" />
-
             </intent-filter>
         </activity>
         <!-- 微信分享回调 -->
@@ -122,40 +121,42 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoDisplay" />
-
         <activity
             android:name="com.mob.tools.MobUIShell"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:windowSoftInputMode="stateHidden|adjustResize">
+
             <!--
             	如果集成QQ分享，或者使用QQ客户端来进行QQ空间的分享，须要在此处添加一个对ACTION_VIEW
             	事件的过滤器，其中的scheme是“tencent”前缀再开发者应用的加上appId。如果此过滤器不设置，
             	则分享结束以后不能得到正确的回调
             -->
 
-            <meta-data android:name="AuthorizeAdapter" android:value="cn.sharesdk.demo.MyAdapter" />
+            <meta-data
+                android:name="AuthorizeAdapter"
+                android:value="cn.sharesdk.demo.MyAdapter" />
 
             <!-- 调用新浪原生SDK，需要注册的回调activity -->
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-
         <activity
             android:name="cn.sharesdk.tencent.qq.ReceiveActivity"
             android:launchMode="singleTask"
             android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="tencent1106532393" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.alipay.sdk.app.H5PayActivity"
             android:configChanges="orientation|keyboardHidden|navigation"
@@ -255,13 +256,13 @@
             android:name="JPUSH_APPKEY"
             android:value="3f41585a44f8cc5a3b8aeb5b" /> <!-- </>值来自开发者平台取得的AppKey -->
         <activity android:name=".activity.WelcomeLoginActivity" />
-
         <activity android:name=".activity.FillInformation" />
         <activity
             android:name=".activity.EditTextActivity"
             android:theme="@style/TranslucentTheme" />
         <activity android:name=".activity.InviteActivity" />
-        <activity android:name=".activity.WeChatActivity"/>
+        <activity android:name=".activity.WeChatActivity" />
+        <activity android:name=".activity.ConnectedActivity"></activity>
     </application>
 
 </manifest>

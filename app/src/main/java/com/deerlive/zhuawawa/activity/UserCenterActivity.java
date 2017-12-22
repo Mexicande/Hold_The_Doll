@@ -28,8 +28,8 @@ public class UserCenterActivity extends BaseActivity {
     TextView mUserName;
     @Bind(R.id.user_wqnum)
     TextView mUserWqnum;
-   /* @Bind(R.id.user_all_num)
-    TextView mUserAllNum;*/
+    /* @Bind(R.id.user_all_num)
+     TextView mUserAllNum;*/
    /* @Bind(R.id.user_id)
     TextView mUserId;*/
     private String mmUserName;
@@ -39,9 +39,10 @@ public class UserCenterActivity extends BaseActivity {
     private String mId;
 
 
-    public void goBack(View v){
+    public void goBack(View v) {
         finish();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,24 +68,24 @@ public class UserCenterActivity extends BaseActivity {
                 .error(R.mipmap.logo)
                 .transform(new GlideCircleTransform(this))
                 .into(mUserAvator);
-       // mUserId.setText("ID:"+mId);
+        // mUserId.setText("ID:"+mId);
     }
 
     private void getUserInfo() {
         JSONObject p = new JSONObject();
-        p.put("token",mToken);
-        p.put("id",mId);
+        p.put("token", mToken);
+        p.put("id", mId);
         Api.getUserInfo(this, p, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
                 JSONObject userinfo = data.getJSONObject("data");
-                SPUtils.getInstance().put("balance",userinfo.getString("balance"));
-                SPUtils.getInstance().put("id",userinfo.getString("id"));
-                SPUtils.getInstance().put("avatar",userinfo.getString("avatar"));
-                SPUtils.getInstance().put("user_nicename",userinfo.getString("user_nicename"));
-                SPUtils.getInstance().put("signaling_key",userinfo.getString("signaling_key"));
+                SPUtils.getInstance().put("balance", userinfo.getString("balance"));
+                SPUtils.getInstance().put("id", userinfo.getString("id"));
+                SPUtils.getInstance().put("avatar", userinfo.getString("avatar"));
+                SPUtils.getInstance().put("user_nicename", userinfo.getString("user_nicename"));
+                SPUtils.getInstance().put("signaling_key", userinfo.getString("signaling_key"));
                 mUserWqnum.setText(userinfo.getString("not_token_num"));
-               // mUserAllNum.setText(getResources().getString(R.string.zq_all_num)+userinfo.getString("all_num"));
+                // mUserAllNum.setText(getResources().getString(R.string.zq_all_num)+userinfo.getString("all_num"));
                 initData();
             }
 
@@ -96,27 +97,41 @@ public class UserCenterActivity extends BaseActivity {
         });
     }
 
-    public void goCharge(View v){
+    public void goCharge(View v) {
         ActivityUtils.startActivity(ChargeActivity.class);
     }
 
-    public void goWaWa(View v){
+    public void onCustomer(View v) {
+        ActivityUtils.startActivity(WeChatActivity.class);
+    }
+
+    public void goWaWa(View v) {
         ActivityUtils.startActivity(WeiQuListActivity.class);
     }
 
-    public void mesgList(View v){
+    /**
+     * 第三方关联
+     * @param v
+     */
+    public void mesgLogin(View v) {
+
+    }
+
+
+
+    public void mesgList(View v) {
         ActivityUtils.startActivity(MessageActivity.class);
     }
 
-    public void shouHuo(View v){
+    public void shouHuo(View v) {
         ActivityUtils.startActivity(ShouhuoActivity.class);
     }
 
-    public void zhuaRecord(View v){
+    public void zhuaRecord(View v) {
         ActivityUtils.startActivity(RecordZhuaListActivity.class);
     }
 
-    public void coinRecord(View v){
+    public void coinRecord(View v) {
         ActivityUtils.startActivity(RecordCoinListActivity.class);
     }
 
@@ -125,4 +140,14 @@ public class UserCenterActivity extends BaseActivity {
         return R.layout.activity_usercenter;
     }
 
+    @OnClick({R.id.bt_invite, R.id.bt_edit})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.bt_invite:
+                break;
+            case R.id.bt_edit:
+                ActivityUtils.startActivity(EditTextActivity.class);
+                break;
+        }
+    }
 }

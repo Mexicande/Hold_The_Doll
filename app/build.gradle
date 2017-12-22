@@ -96,6 +96,9 @@ dependencies {
     }
     compile(name: 'LiteAVSDK_Player', ext: 'aar')
     compile files('libs/alipaySdk-20160516.jar')
+    compile files('libs/ShareSDK-Linkedin-3.1.2.jar')
+    compile files('libs/ShareSDK-QQ-3.1.2.jar')
+    compile files('libs/ShareSDK-SinaWeibo-3.1.2.jar')
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.blankj:utilcode:1.9.3'
@@ -118,7 +121,4 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'com.squareup.okhttp3:okhttp:3.4.2'
     testCompile 'junit:junit:4.12'
-    compile files('libs/ShareSDK-Linkedin-3.1.2.jar')
-    compile files('libs/ShareSDK-QQ-3.1.2.jar')
-    compile files('libs/ShareSDK-SinaWeibo-3.1.2.jar')
 }
