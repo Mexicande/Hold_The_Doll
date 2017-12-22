@@ -27,11 +27,12 @@
         AppKey="4YHpf10cmKLrvTaN"
         ShareByAppClient="true"
         Enable="true" />
-    <QZone
-        Id="4"
-        SortId="4"
-        AppId="101347679"
-        AppKey="be04b1a0da7e4414e6dd9867d8cda88e"
+    <LinkedIn
+        Id="20"
+        SortId="20"
+        ApiKey="81lj6jxc1s8eny"
+        SecretKey="9jNtjrriUOyVv0Ts"
+        RedirectUrl="http://sharesdk.cn"
         ShareByAppClient="true"
         Enable="true" />
 

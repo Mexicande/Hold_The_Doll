@@ -28,18 +28,7 @@ import com.deerlive.zhuawawa.MainActivity;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
-import com.deerlive.zhuawawa.utils.shareutils.LoginUtil;
-import com.deerlive.zhuawawa.utils.shareutils.ShareConfig;
-import com.deerlive.zhuawawa.utils.shareutils.ShareManager;
-import com.deerlive.zhuawawa.utils.shareutils.login.LoginListener;
-import com.deerlive.zhuawawa.utils.shareutils.login.LoginPlatform;
-import com.deerlive.zhuawawa.utils.shareutils.login.LoginResult;
-import com.deerlive.zhuawawa.utils.shareutils.login.result.QQToken;
-import com.deerlive.zhuawawa.utils.shareutils.login.result.QQUser;
 import com.hss01248.dialog.StyledDialog;
-import com.tencent.tauth.IUiListener;
-import com.tencent.tauth.Tencent;
-import com.tencent.tauth.UiError;
 
 import java.util.HashMap;
 
@@ -50,6 +39,8 @@ import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.PlatformDb;
 import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qq.QQ;
 import cn.sharesdk.wechat.friends.Wechat;
 
 /**
@@ -80,11 +71,15 @@ public class LoginFragment extends DialogFragment {
 
 
     private Platform mPlatForm;
+    private Platform qqPlatForm;
+    private Platform sinaPlatForm;
+    private Platform linkedPlatForm;
+
     private MyHandler mHandler;
     private JSONObject params;
     Dialog mLoadingDialog;
+    private String from = "";
 
-    private LoginListener mLoginListener;
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -98,16 +93,26 @@ public class LoginFragment extends DialogFragment {
                 dismiss();
                 break;
             case R.id.iv_WeChat:
+                from="Wechat";
                 mPlatForm.setPlatformActionListener(mPlatListener);
                 mPlatForm.authorize();
                 mLoadingDialog = StyledDialog.buildLoading().setActivity(getActivity()).show();
                 break;
             case R.id.iv_Sina:
+                from="Sina";
+                sinaPlatForm.setPlatformActionListener(mPlatListener);
+                sinaPlatForm.authorize();
+                mLoadingDialog = StyledDialog.buildLoading().setActivity(getActivity()).show();
                 break;
             case R.id.iv_QQ:
-                LoginUtil.login(getActivity(), LoginPlatform.QQ, mLoginListener);
+                from="QQ";
+                qqPlatForm.setPlatformActionListener(mPlatListener);
+                qqPlatForm.authorize();
+                mLoadingDialog = StyledDialog.buildLoading().setActivity(getActivity()).show();
                 break;
             case R.id.iv_LinkedIn:
+                from="Linkedin";
+
                 break;
         }
     }
@@ -145,65 +150,16 @@ public class LoginFragment extends DialogFragment {
         lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         window.setAttributes(lp);
         mPlatForm = ShareSDK.getPlatform(Wechat.NAME);
+        qqPlatForm = ShareSDK.getPlatform(QQ.NAME);
+        sinaPlatForm = ShareSDK.getPlatform(SinaWeibo.NAME);
         mHandler = new MyHandler();
-        ShareConfig config = ShareConfig.instance()
-                .qqId(getString(R.string.qq_id))
-                .weiboId(getString(R.string.sina_id))
-                .wxId(getString(R.string.wechat_id))
-                .weiboRedirectUrl("XXXXXX")
-                .wxSecret(getString(R.string.wechat_key));
-        ShareManager.init(config);
-        setLisenter();
 
         return dialog;
 
     }
 
-    private void setLisenter() {
 
-        mLoginListener = new LoginListener() {
-            @Override
-            public void loginSuccess(LoginResult result) {
-                Toast.makeText(getActivity(),
-                        result.getUserInfo() != null ? result.getUserInfo().getNickname()
-                                : "" + "登录成功", Toast.LENGTH_SHORT).show();
-                // 处理result
-                switch (result.getPlatform()) {
-                    case LoginPlatform.QQ:
-                        QQUser user = (QQUser) result.getUserInfo();
-                        QQToken token = (QQToken) result.getToken();
-                        params = new JSONObject();
-                        params.put("name",user.getNickname());
-                        params.put("from","qq");
-                        params.put("head_img",user.getHeadImageUrl());
-                        params.put("openid",user.getOpenId());
-                        params.put("access_token",token.getAccessToken());
-                        params.put("qudao",Api.QUDAO);
-                        mHandler.sendEmptyMessage(1);
-                        break;
-                    case LoginPlatform.WEIBO:
-                        // 处理信息
-                        break;
-                    case LoginPlatform.WX:
-                        break;
-                }
-                dismiss();
-                ActivityUtils.startActivity(MainActivity.class);
-                getActivity().finish();
-            }
 
-            @Override
-            public void loginFailure(Exception e) {
-                Toast.makeText(getActivity(), "登录失败", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void loginCancel() {
-                Toast.makeText(getActivity(), "登录取消", Toast.LENGTH_SHORT).show();
-            }
-        };
-
-}
 
     @Override
     public void onDismiss(DialogInterface dialog) {
@@ -214,10 +170,9 @@ public class LoginFragment extends DialogFragment {
     private PlatformActionListener mPlatListener = new PlatformActionListener() {
         @Override
         public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-            mLoadingDialog.dismiss();
+            //mLoadingDialog.dismiss();
             PlatformDb db = platform.getDb();
             String name = db.getUserName();
-            String from = "Wechat";
             String head_img = db.getUserIcon();
             String openid = db.getUserId();
             String access_token = db.getToken();
@@ -236,8 +191,8 @@ public class LoginFragment extends DialogFragment {
         @Override
         public void onError(Platform platform, int i, Throwable throwable) {
             mLoadingDialog.dismiss();
-
         }
+
         @Override
         public void onCancel(Platform platform, int i) {
             mLoadingDialog.dismiss();
@@ -263,8 +218,8 @@ public class LoginFragment extends DialogFragment {
                         SPUtils.getInstance().put("signaling_key",userinfo.getString("signaling_key"));
                         SPUtils.getInstance().put("bgm","1");
                         SPUtils.getInstance().put("yinxiao","1");
-                        dismiss();
                         ActivityUtils.startActivity(MainActivity.class);
+                        dismiss();
                         getActivity().finish();
                     }
 
@@ -279,5 +234,9 @@ public class LoginFragment extends DialogFragment {
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+    }
 }

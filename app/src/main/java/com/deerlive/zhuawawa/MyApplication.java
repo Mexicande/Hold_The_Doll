@@ -45,6 +45,8 @@ public class MyApplication extends Application {
         //极光推送
         //JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
+
+
     }
     public static MyApplication getInstance(){
         return instance;
