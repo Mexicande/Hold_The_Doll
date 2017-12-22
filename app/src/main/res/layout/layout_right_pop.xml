@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="300px"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:divider="@drawable/divider_horizontal_bg"
+              android:gravity="center_horizontal"
+              android:orientation="vertical"
+              android:showDividers="middle">
+
+    <TextView
+        android:id="@+id/save"
+        android:textColor="@color/text_color"
+        android:layout_width="150dp"
+        android:background="@color/white"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="保存图片"
+        android:textSize="16sp"/>
+
+</LinearLayout>

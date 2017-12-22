@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,31 +19,26 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.deerlive.zhuawawa.R;
-import com.deerlive.zhuawawa.adapter.MessageRecyclerListAdapter;
 import com.deerlive.zhuawawa.adapter.PayMethodRecyclerListAdapter;
 import com.deerlive.zhuawawa.base.BaseActivity;
 import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.intf.OnRecyclerViewItemClickListener;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
-import com.deerlive.zhuawawa.model.DanmuMessage;
 import com.deerlive.zhuawawa.model.PayMethod;
 import com.deerlive.zhuawawa.model.PayModel;
 import com.deerlive.zhuawawa.pay.alipay.Alipay;
 import com.deerlive.zhuawawa.pay.alipay.PayResult;
 import com.deerlive.zhuawawa.pay.wechat.Wechat;
-import com.deerlive.zhuawawa.utils.LogUtils;
 import com.hss01248.dialog.StyledDialog;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
-import butterknife.OnClick;
 
-public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemClickListener{
+public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemClickListener {
 
     @Bind(R.id.pay_method_list)
     RecyclerView mPayMethodList;
@@ -59,6 +52,8 @@ public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemCl
     ImageView mBeginPay;
     @Bind(R.id.pay_container)
     LinearLayout mChargeContainer;
+    @Bind(R.id.tv_title)
+    TextView tvTitle;
     private String mToken;
     private String mBalance;
     private int mCur = -1;
@@ -66,19 +61,21 @@ public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemCl
     private String payMethod = "wechat";
     private ArrayList<PayMethod> mPayMethodData = new ArrayList<>();
     private PayMethodRecyclerListAdapter mPaymethidAdapter;
-    Dialog mLoadingDialog ;
+    Dialog mLoadingDialog;
     private String selectMoney;
     private String currentMoney;
-    private String myPayWay="";
-    private String paytype_id="";
+    private String myPayWay = "";
+    private String paytype_id = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tvTitle.setText("充值");
         mToken = SPUtils.getInstance().getString("token");
         mBalance = SPUtils.getInstance().getString("balance");
         mMybalanceText.setText(mBalance);
-        mPaymethidAdapter = new PayMethodRecyclerListAdapter(this,mPayMethodData);
-        GridLayoutManager m = new GridLayoutManager(this,2);
+        mPaymethidAdapter = new PayMethodRecyclerListAdapter(this, mPayMethodData);
+        GridLayoutManager m = new GridLayoutManager(this, 2);
         mPayMethodList.setLayoutManager(m);
         mPayMethodList.setAdapter(mPaymethidAdapter);
         mPaymethidAdapter.setOnRecyclerViewItemClickListener(this);
@@ -86,13 +83,13 @@ public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemCl
         initData();
     }
 
-    public void ZfbC(View v){
+    public void ZfbC(View v) {
         mCheckboxZfb.setChecked(true);
         mCheckboxWechat.setChecked(false);
         payMethod = "zfb";
     }
 
-    public void wechatC(View v){
+    public void wechatC(View v) {
         mCheckboxZfb.setChecked(false);
         mCheckboxWechat.setChecked(true);
         payMethod = "wechat";
@@ -103,26 +100,28 @@ public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemCl
         super.onResume();
 
         mBeginPay.setClickable(true);
-        if(mLoadingDialog != null){
+        if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();
         }
     }
+
     ArrayList<PayModel> payModels = new ArrayList<>();
     ArrayList<CheckBox> cbs = new ArrayList<>();
+
     private void initData() {
         Api.getPayMethod(this, new JSONObject(), new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
                 mPayMethodData.clear();
                 JSONArray list = data.getJSONArray("info");
-                for(int i= 0;i<list.size();i++){
+                for (int i = 0; i < list.size(); i++) {
                     JSONObject t = list.getJSONObject(i);
                     PayMethod m1 = new PayMethod();
                     m1.setCoin(t.getString("diamond_num"));
                     m1.setPrice(t.getString("money_num"));
                     m1.setId(t.getString("id"));
                     m1.setIf_check("0");
-                    if(i == 0){
+                    if (i == 0) {
                         m1.setIf_check("1");
                         mCur = 0;
                     }
@@ -138,12 +137,12 @@ public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemCl
         });
 
         JSONObject p = new JSONObject();
-        p.put("token",mToken);
+        p.put("token", mToken);
         Api.getPayType(this, p, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
                 JSONArray list = data.getJSONArray("data");
-                for(int i= 0;i<list.size();i++){
+                for (int i = 0; i < list.size(); i++) {
                     PayModel model = new PayModel();
                     model.setId(list.getJSONObject(i).getString("id"));
                     model.setIcon(list.getJSONObject(i).getString("icon"));
@@ -164,13 +163,13 @@ public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemCl
     }
 
     private void insertPayItem(ArrayList<PayModel> payModels) {
-        for(int i = 0 ;i<payModels.size();i++){
-            LinearLayout item = (LinearLayout)LayoutInflater.from(this).inflate(R.layout.pay_item,null);
-            ImageView mImage =(ImageView) item.findViewById(R.id.pay_icon);
-            TextView pay_name = (TextView)item.findViewById(R.id.pay_name);
+        for (int i = 0; i < payModels.size(); i++) {
+            LinearLayout item = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.pay_item, null);
+            ImageView mImage = (ImageView) item.findViewById(R.id.pay_icon);
+            TextView pay_name = (TextView) item.findViewById(R.id.pay_name);
             item.setTag(payModels.get(i).getId());
-            CheckBox cb = (CheckBox)item.findViewById(R.id.checkbox);
-            if(i == 0){
+            CheckBox cb = (CheckBox) item.findViewById(R.id.checkbox);
+            if (i == 0) {
                 cb.setChecked(true);
                 myPayWay = payModels.get(i).getName();
                 paytype_id = payModels.get(i).getId();
@@ -189,23 +188,23 @@ public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemCl
         }
     }
 
-    public void beigin_pay(View v){
-        if(mCur == -1){
+    public void beigin_pay(View v) {
+        if (mCur == -1) {
             toast(getResources().getString(R.string.data_error));
             return;
         }
         mLoadingDialog = StyledDialog.buildLoading().setActivity(this).show();
         mBeginPay.setClickable(false);
         JSONObject params = new JSONObject();
-        params.put("token",mToken);
-        params.put("item_id",mPayMethodData.get(mCur).getId());
-        params.put("paytype_id",paytype_id);
+        params.put("token", mToken);
+        params.put("item_id", mPayMethodData.get(mCur).getId());
+        params.put("paytype_id", paytype_id);
         Api.beginPay(this, params, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
 
                 String className = data.getString("class_name");
-                switch (className){
+                switch (className) {
                     case "alipay_app":
                         String payInfo = data.getString("request");
                         Alipay alipay = new Alipay(ChargeActivity.this);
@@ -238,10 +237,10 @@ public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemCl
     }
 
     private void checkPayWay(View view) {
-        String id = (String)view.getTag();
-        for(int i =0;i<payModels.size();i++){
+        String id = (String) view.getTag();
+        for (int i = 0; i < payModels.size(); i++) {
             cbs.get(i).setChecked(false);
-            if(payModels.get(i).getId().equals(id)){
+            if (payModels.get(i).getId().equals(id)) {
                 cbs.get(i).setChecked(true);
                 myPayWay = payModels.get(i).getName();
                 paytype_id = payModels.get(i).getId();
@@ -249,7 +248,7 @@ public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemCl
         }
     }
 
-    public void goBack(View v){
+    public void goBack(View v) {
         finish();
     }
 
@@ -283,9 +282,9 @@ public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemCl
                         Toast.makeText(ChargeActivity.this, "支付成功", Toast.LENGTH_SHORT).show();
 
                         int b = Integer.parseInt(mPayMethodData.get(mCur).getCoin()) + Integer.parseInt(mBalance);
-                        mMybalanceText.setText(b+"");
+                        mMybalanceText.setText(b + "");
 
-                        SPUtils.getInstance().put("balance",mBalance);
+                        SPUtils.getInstance().put("balance", mBalance);
                     } else {
                         // 判断resultStatus 为非"9000"则代表可能支付失败
                         // "8000"代表支付结果因为支付渠道原因或者系统原因还在等待支付结果确认，最终交易是否成功以服务端异步通知为准（小概率状态）
@@ -297,7 +296,7 @@ public class ChargeActivity extends BaseActivity implements OnRecyclerViewItemCl
                             Toast.makeText(ChargeActivity.this, "支付失败", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    if(mLoadingDialog != null){
+                    if (mLoadingDialog != null) {
                         mLoadingDialog.dismiss();
                     }
                     break;

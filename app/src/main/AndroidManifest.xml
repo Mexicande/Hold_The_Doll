@@ -258,7 +258,8 @@
         <activity
             android:name=".activity.EditTextActivity"
             android:theme="@style/TranslucentTheme" />
-        <activity android:name=".activity.InviteActivity"></activity>
+        <activity android:name=".activity.InviteActivity" />
+        <activity android:name=".activity.WeChatActivity"></activity>
     </application>
 
 </manifest>

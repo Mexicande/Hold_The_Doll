@@ -13,7 +13,7 @@
         android:layout_height="20dp"
         android:layout_margin="10dp"
         android:layout_centerVertical="true"
-        android:background="@drawable/check_pay_way"
+        android:background="@drawable/check_exchange_way"
         android:enabled="false"
         android:button="@null"/>
     <ImageView

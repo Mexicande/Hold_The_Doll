@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.SPUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.deerlive.zhuawawa.R;
@@ -20,6 +21,7 @@ import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.intf.OnRecyclerViewItemClickListener;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
 import com.deerlive.zhuawawa.model.DanmuMessage;
+import com.deerlive.zhuawawa.view.dialog.CashDialog;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -39,6 +41,7 @@ public class WeiQuListActivity extends BaseActivity implements OnRecyclerViewIte
     @Bind(R.id.checkbox_all)
     CheckBox mCheckBoxAll;
     private String mToken;
+    private CashDialog cashDialog;
     private ArrayList<DanmuMessage> mListData = new ArrayList();
     private WeiQuRecyclerListAdapter mAdapter = new WeiQuRecyclerListAdapter(this,mListData);
 
@@ -154,18 +157,61 @@ public class WeiQuListActivity extends BaseActivity implements OnRecyclerViewIte
         }
         mAdapter.notifyDataSetChanged();
     }
-
+   private String doll_id = "";
     public void tiqu(View v){
-        tiquDuihuan("1");
+        doll_id="";
+        for(int i =0;i<mListData.size();i++){
+            if("1".equals(mListData.get(i).getRemoteUid())){
+                doll_id += mListData.get(i).getId();
+                doll_id += ",";
+            }
+        }
+        if(doll_id.length()>0){
+            doll_id = doll_id.substring(0,doll_id.length()-1);
+        }
+        if(StringUtils.isTrimEmpty(doll_id)){
+            toast(getString(R.string.data_empty_error));
+        }else {
+            cashDialog = new CashDialog(this);
+            cashDialog.setYesOnclickListener("是", new CashDialog.onYesOnclickListener() {
+                @Override
+                public void onYesClick() {
+                    cashDialog.dismiss();
+                    tiquDuihuan("1", doll_id);
+                }
+            });
+            cashDialog.setNoOnclickListener("否", new CashDialog.onNoOnclickListener() {
+                @Override
+                public void onNoClick() {
+                    cashDialog.dismiss();
+                }
+            });
+            cashDialog.show();
+        }
     }
     public void duihuan(View v){
-        tiquDuihuan("0");
+        doll_id="";
+        for(int i =0;i<mListData.size();i++){
+            if("1".equals(mListData.get(i).getRemoteUid())){
+                doll_id += mListData.get(i).getId();
+                doll_id += ",";
+            }
+        }
+        if(doll_id.length()>0){
+            doll_id = doll_id.substring(0,doll_id.length()-1);
+        }
+        if(StringUtils.isTrimEmpty(doll_id)){
+            toast(getString(R.string.data_empty_error));
+        }else {
+
+            tiquDuihuan("0",doll_id);
+        }
     }
 
-    private void  tiquDuihuan(String type){
+    private void  tiquDuihuan(String type,String doll_id){
         JSONObject p = new JSONObject();
         p.put("token",mToken);
-        String doll_id = "";
+      /*  String doll_id = "";
         for(int i =0;i<mListData.size();i++){
             if("1".equals(mListData.get(i).getRemoteUid())){
                 doll_id += mListData.get(i).getId();
@@ -175,12 +221,15 @@ public class WeiQuListActivity extends BaseActivity implements OnRecyclerViewIte
         if(doll_id.length()>0){
             doll_id = doll_id.substring(0,doll_id.length()-1);
         }
-        p.put("doll_id",doll_id);
-        p.put("type",type);
+
         if(StringUtils.isTrimEmpty(doll_id)){
             toast(getString(R.string.data_empty_error));
             return;
-        }
+        }*/
+        p.put("doll_id",doll_id);
+        LogUtils.i("提取===",doll_id);
+
+        p.put("type",type);
         Api.applyPostOrDuiHuanWaWa(this, p, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {

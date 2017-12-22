@@ -74,4 +74,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="vista_share_title">分享</string>
+    <string name="wechat_qr">扫一扫上面的二维码图案, 加我微信\n\n客服时间: 周一到周五早上10点-晚7点</string>
+    <string name="customer_service">客服小爪来帮助您</string>
+
 </resources>

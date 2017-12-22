@@ -41,7 +41,7 @@
                 android:id="@+id/bt_invite"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_height="25dp"
+                android:layout_height="35dp"
                 app:sCornersRadius="5dp"
                 android:paddingRight="7dp"
                 android:paddingLeft="7dp"
@@ -55,13 +55,11 @@
                 android:id="@+id/bt_edit"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="20dp"
-                android:layout_height="25dp"
+                android:layout_height="35dp"
                 app:sCornersRadius="5dp"
                 android:layout_marginLeft="10dp"
-                android:drawablePadding="4dp"
                 android:drawableLeft="@mipmap/iv_edit"
                 android:paddingRight="7dp"
-                android:paddingLeft="7dp"
                 app:sSolidColor="@color/green_text"
                 android:textSize="13sp"
                 android:textColor="#FEFEFE"
@@ -227,6 +225,40 @@
         android:orientation="vertical"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="14dp"
+            android:onClick="onCustomer">
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@mipmap/iv_service"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_weight="1"
+                android:text="@string/customer_service"
+                android:textColor="@color/center_black"
+                android:textSize="12sp"
+                android:id="@+id/tv_service" />
+            <ImageView
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/iv_arrow"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/divider"
+            android:background="@color/user_center_lion"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="52dp"
