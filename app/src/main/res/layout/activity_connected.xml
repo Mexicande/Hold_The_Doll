@@ -23,7 +23,7 @@
         <TextView
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/connected_other"
             android:layout_gravity="center_horizontal"
@@ -122,9 +122,7 @@
                 android:textColor="@color/center_black"
                 android:textSize="12sp"
                 />
-
             <LinearLayout
-
                 android:id="@+id/qq_connection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -185,9 +183,7 @@
                 android:textColor="@color/center_black"
                 android:textSize="12sp"
                 android:id="@+id/textView" />
-
             <LinearLayout
-
                 android:id="@+id/wechat_connection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">

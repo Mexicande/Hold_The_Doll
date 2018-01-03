@@ -136,7 +136,7 @@
                 android:id="@+id/game_status_ing"
                     android:layout_width="150dp"
                 android:layout_height="80dp"
-                android:src="@drawable/game_ok_no"/>
+                android:src="@drawable/game_player"/>
             <LinearLayout
                 android:layout_below="@id/game_status_ing"
                 android:layout_centerHorizontal="true"

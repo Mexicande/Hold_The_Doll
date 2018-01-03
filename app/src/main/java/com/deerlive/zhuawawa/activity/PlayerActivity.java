@@ -477,13 +477,17 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
         if(m_agoraAPI.isOnline() == 0){
             m_agoraAPI.login2(getResources().getString(R.string.agora_appid), mLocalUid+"", mSignalKey, 0, "",5, 5);
         }else {
+            mRtcEngine.setupRemoteVideo(new VideoCanvas(remoteVideoView, VideoCanvas.RENDER_MODE_HIDDEN, mRemoteUid));
             m_agoraAPI.channelJoin(mChannleName);
         }
         m_agoraAPI.callbackSet(new AgoraAPI.CallBack() {
             @Override
             public void onLoginSuccess(int uid, int fd) {
                 log("login successfully");
+                mRtcEngine.setupRemoteVideo(new VideoCanvas(remoteVideoView, VideoCanvas.RENDER_MODE_HIDDEN, mRemoteUid));
+
                 m_agoraAPI.channelJoin(mChannleName);
+
             }
 
             @Override
@@ -831,6 +835,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
         agoraSend(d);
         addDanmuList(d);
     }
+
 
     private void changeChannelStatus(String channel_status,JSONObject j) {
         if (active){
