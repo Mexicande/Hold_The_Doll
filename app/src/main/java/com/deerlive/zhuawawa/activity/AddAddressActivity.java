@@ -240,7 +240,7 @@ public class AddAddressActivity extends BaseActivity {
                 detail.add(entity);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); 
         }
         return detail;
     }

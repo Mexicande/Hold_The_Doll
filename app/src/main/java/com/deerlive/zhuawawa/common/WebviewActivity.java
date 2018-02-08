@@ -1,5 +1,6 @@
 package com.deerlive.zhuawawa.common;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Dialog;
 import android.content.ComponentName;
@@ -38,6 +39,7 @@ public class WebviewActivity extends BaseActivity implements PlatformActionListe
     @Bind(R.id.tv_title)
     TextView tvTitle;
 
+    @SuppressLint("AddJavascriptInterface")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle data = getIntent().getExtras();
@@ -46,8 +48,12 @@ public class WebviewActivity extends BaseActivity implements PlatformActionListe
         mPlatFormMoment = ShareSDK.getPlatform(WechatMoments.NAME);
         mPlatFormWeChat.setPlatformActionListener(this);
         mPlatFormMoment.setPlatformActionListener(this);
-        tvTitle.setText(data.getString("title"));
-        mWebView.loadUrl(data.getString("jump"));
+
+        if (data != null) {
+            String title = data.getString("title");
+            tvTitle.setText(title);
+        }
+        mWebView.loadUrl(data != null ? data.getString("jump") : null);
         mLoadingDialog = StyledDialog.buildLoading().setActivity(this).show();
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
