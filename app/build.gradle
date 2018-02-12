@@ -100,6 +100,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'recyclerview-v7'
     }
+    compile 'com.android.support:multidex:1.0.1'
     compile(name: 'LiteAVSDK_Player', ext: 'aar')
     compile files('libs/alipaySdk-20160516.jar')
     compile 'com.android.support:appcompat-v7:25.3.1'

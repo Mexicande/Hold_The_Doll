@@ -1,6 +1,8 @@
 package com.deerlive.zhuawawa;
 
 import android.app.Application;
+import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.util.DisplayMetrics;
 
 import com.blankj.utilcode.util.Utils;
@@ -30,6 +32,12 @@ import static com.deerlive.zhuawawa.common.Api.QUDAO;
 public class MyApplication extends Application {
     private static MyApplication instance;
     String channel="test";
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this) ;
+    }
 
     @Override
     public void onCreate() {
