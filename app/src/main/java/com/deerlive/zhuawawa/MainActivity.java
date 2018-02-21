@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -18,11 +19,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.SizeUtils;
-import com.blankj.utilcode.util.StringUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.bumptech.glide.Glide;
 import com.deerlive.zhuawawa.activity.ChargeActivity;
 import com.deerlive.zhuawawa.activity.PlayerActivity;
@@ -33,22 +29,25 @@ import com.deerlive.zhuawawa.adapter.GameRecyclerListAdapter;
 import com.deerlive.zhuawawa.base.BaseActivity;
 import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.common.WebviewActivity;
+import com.deerlive.zhuawawa.fragment.AdialogFragment;
 import com.deerlive.zhuawawa.intf.OnRecyclerViewItemClickListener;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
 import com.deerlive.zhuawawa.model.DeviceAndBanner;
+import com.deerlive.zhuawawa.model.PopupBean;
+import com.deerlive.zhuawawa.utils.ActivityUtils;
+import com.deerlive.zhuawawa.utils.AppUtils;
+import com.deerlive.zhuawawa.utils.SPUtils;
+import com.deerlive.zhuawawa.utils.SizeUtils;
+import com.deerlive.zhuawawa.utils.TimeUtils;
+import com.deerlive.zhuawawa.utils.ToastUtils;
 import com.deerlive.zhuawawa.view.SpaceItemDecoration;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
-import com.uuch.adlibrary.AdConstant;
-import com.uuch.adlibrary.AdManager;
-import com.uuch.adlibrary.bean.AdInfo;
-import com.uuch.adlibrary.transformer.DepthPageTransformer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -107,8 +106,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                             String advertTime = SPUtils.getInstance().getString("AdvertTime", String.valueOf(1111111111111L));
                             boolean today = TimeUtils.isToday(advertTime);
                             if (!today) {
-                                adDialog(list);
-                            }
+                                PopupBean popupBean = JSON.parseObject(list.toString(), PopupBean.class);
+                                AdialogFragment adialogFragment= AdialogFragment.newInstance(popupBean);
+                                adialogFragment.show(getSupportFragmentManager(),"adialogFragment");                            }
 
                         }
                     }
@@ -122,34 +122,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         SPUtils.getInstance().put("AdvertTime", timeMillis);
     }
 
-    private void adDialog(final JSONObject list) {
-        AdInfo adInfo = new AdInfo();
-        adInfo.setActivityImg(list.getString("img"));
 
-        List<AdInfo>advList = new ArrayList<>();
-        advList.add(adInfo);
-
-         final AdManager adManager = new AdManager(this, advList);
-        adManager.setOverScreen(true)
-                .setWidthPerHeight(Float.parseFloat(list.getString("size")))
-                .setBackViewColor(Color.parseColor("#AA333333"))
-                .setPageTransformer(new DepthPageTransformer())
-                .setOnImageClickListener(new AdManager.OnImageClickListener() {
-                    @Override
-                    public void onImageClick(View view, AdInfo advInfo) {
-                        if (!"".equals(list.getString("jump"))&&list.getString("jump")!=null) {
-
-                            Bundle temp = new Bundle();
-                            temp.putString("title", list.getString("name"));
-                            temp.putString("jump", list.getString("jump"));
-                            ActivityUtils.startActivity(temp, WebviewActivity.class);
-
-                        }
-                        adManager.dismissAdDialog();
-                    }
-                })
-                .showAdDialog(AdConstant.ANIM_DOWN_TO_UP);
-    }
 
 
     public void userCenter(View v) {
@@ -301,19 +274,16 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 
     public void checkUpdate() {
-        JSONObject params = new JSONObject();
-        try {
-            String versionCode = getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
+        Map<String,String>params=new HashMap<>();
+
+            String versionCode = AppUtils.getAppVersionCode()+"";
             params.put("ver_num", versionCode);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
 
         Api.checkUpdate(this, params, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
                 JSONObject info = data.getJSONObject("data");
-                if (!StringUtils.isEmpty(info.getString("package"))) {
+                if (!TextUtils.isEmpty(info.getString("package"))) {
                     checkUpgrade(info.getString("package"), info.getString("description"));
                 }
             }
@@ -367,5 +337,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 break;
 
         }
+    }
+    private long mLastBackTime = 0;
+    @Override
+    public void onBackPressed() {
+        if ((System.currentTimeMillis() - mLastBackTime) < 1000) {
+            finish();
+        } else {
+            mLastBackTime = System.currentTimeMillis();
+            ToastUtils.showShort( "再按一次退出");
+        }
+
+
     }
 }

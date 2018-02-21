@@ -9,19 +9,20 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.deerlive.zhuawawa.MainActivity;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.base.BaseActivity;
 import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.common.WebviewActivity;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
+import com.deerlive.zhuawawa.utils.ActivityUtils;
+import com.deerlive.zhuawawa.utils.LogUtils;
+import com.deerlive.zhuawawa.utils.SPUtils;
+import com.deerlive.zhuawawa.utils.ToastUtils;
 import com.hss01248.dialog.StyledDialog;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import cn.sharesdk.framework.Platform;
@@ -34,11 +35,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     Platform mPlatForm;
     Dialog mLoadingDialog;
     MyHandler mHandler;
-    JSONObject params;
     @Bind(R.id.checkbox_login)
     CheckBox checkboxLogin;
     @Bind(R.id.weChat_login)
     ImageView weChatLogin;
+    private Map<String,String> params;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             String openid = db.getUserId();
             String access_token = db.getToken();
             String expires_date = db.getExpiresTime() + "";
-            params = new JSONObject();
+            params = new HashMap<>();
             params.put("name", name);
             params.put("from", from);
             params.put("head_img", head_img);

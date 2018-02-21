@@ -2,17 +2,18 @@ package com.deerlive.zhuawawa.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.SpanUtils;
-import com.blankj.utilcode.util.StringUtils;
+
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.intf.OnRecyclerViewItemClickListener;
 import com.deerlive.zhuawawa.model.DanmuMessage;
+import com.deerlive.zhuawawa.utils.SpanUtils;
 
 import java.util.ArrayList;
 
@@ -118,9 +119,10 @@ public class MessageRecyclerListAdapter extends RecyclerView.Adapter<RecyclerVie
         } else {
             final MessageViewHolder temp = (MessageViewHolder)holder;
             DanmuMessage t = mItems.get(position);
-            if(StringUtils.isTrimEmpty(t.getUserName()) || StringUtils.isTrimEmpty(t.getMessageContent())){
+            if(TextUtils.isEmpty(t.getUserName()) || TextUtils.isEmpty(t.getMessageContent())){
                 return;
             }
+
             SpanUtils u = new SpanUtils();
             u.append(t.getUserName()+":");
             u.setForegroundColor(mContext.getResources().getColor(R.color.colorMainBack));

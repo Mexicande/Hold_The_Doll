@@ -7,9 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.blankj.utilcode.util.SnackbarUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.deerlive.zhuawawa.R;
+
+import com.deerlive.zhuawawa.utils.ToastUtils;
 
 import butterknife.ButterKnife;
 
@@ -32,9 +31,6 @@ public abstract class BaseFragment extends Fragment {
 
     public void toast(String mes){
         ToastUtils.showShort(mes);
-    }
-    public void showSnake(String msg){
-        SnackbarUtils.with(getView()).setBgColor(getResources().getColor(R.color.colorPrimary)).setMessage(msg).show();
     }
     public abstract int getLayoutResource();
 }

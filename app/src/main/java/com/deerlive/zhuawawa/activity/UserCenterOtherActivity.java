@@ -9,8 +9,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.adapter.RecordZqRecyclerListAdapter;
@@ -19,6 +17,7 @@ import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.common.GlideCircleTransform;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
 import com.deerlive.zhuawawa.model.DanmuMessage;
+import com.deerlive.zhuawawa.utils.SPUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
@@ -89,11 +88,11 @@ public class UserCenterOtherActivity extends BaseActivity {
     }
 
     private void getGameData(final int limit_begin) {
-        JSONObject params = new JSONObject();
-        params.put("token",mToken);
+        Map<String,String>params=new HashMap<>();
+        params.put("token", mToken);
+        params.put("limit_begin", String.valueOf(limit_begin));
+        params.put("limit_num", 10+"");
         params.put("userId",mUserId);
-        params.put("limit_begin",limit_begin);
-        params.put("limit_num",10);
         Api.getZhuaRecord(this, params, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {

@@ -16,9 +16,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
 import com.chad.library.adapter.base.listener.OnItemSwipeListener;
@@ -28,6 +25,7 @@ import com.deerlive.zhuawawa.base.BaseActivity;
 import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
 import com.deerlive.zhuawawa.model.AddressBean;
+import com.deerlive.zhuawawa.utils.SPUtils;
 import com.deerlive.zhuawawa.view.popup.EasyPopup;
 import com.deerlive.zhuawawa.view.popup.HorizontalGravity;
 import com.deerlive.zhuawawa.view.popup.VerticalGravity;

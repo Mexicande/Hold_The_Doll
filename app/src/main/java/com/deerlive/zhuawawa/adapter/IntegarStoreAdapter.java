@@ -6,13 +6,13 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.blankj.utilcode.util.ScreenUtils;
-import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.model.GiftStoreBean;
+import com.deerlive.zhuawawa.utils.ScreenUtils;
+import com.deerlive.zhuawawa.utils.SizeUtils;
 
 import java.util.List;
 

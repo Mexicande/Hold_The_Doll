@@ -6,15 +6,16 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.deerlive.zhuawawa.MainActivity;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.activity.LoginActivity;
 import com.deerlive.zhuawawa.base.BaseActivity;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
+import com.deerlive.zhuawawa.utils.ActivityUtils;
+import com.deerlive.zhuawawa.utils.SPUtils;
+
+import java.util.HashMap;
 
 import butterknife.Bind;
 
@@ -30,7 +31,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void getLaunchScreen() {
-        Api.getLaunchScreen(this, new JSONObject(), new OnRequestDataListener() {
+        Api.getLaunchScreen(this, new HashMap<String, String>(), new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, final JSONObject data) {
                    Glide.with(getApplicationContext()).load(data.getString("info")).into(mLauchScreen);

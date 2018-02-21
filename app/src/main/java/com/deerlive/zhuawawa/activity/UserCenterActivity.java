@@ -9,14 +9,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.SPUtils;
 import com.bumptech.glide.Glide;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.base.BaseActivity;
 import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.common.GlideCircleTransform;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
+import com.deerlive.zhuawawa.utils.ActivityUtils;
+import com.deerlive.zhuawawa.utils.SPUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -134,13 +134,6 @@ public class UserCenterActivity extends BaseActivity {
         });
     }
 
-   /* public void goCharge(View v) {
-        ActivityUtils.startActivity(ChargeActivity.class);
-    }*/
-
-  /*  public void onCustomer(View v) {
-        ActivityUtils.startActivity(WeChatActivity.class);
-    }*/
 
 
     public void goWaWa(View v) {

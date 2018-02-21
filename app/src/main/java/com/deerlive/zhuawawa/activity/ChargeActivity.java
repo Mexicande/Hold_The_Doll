@@ -24,8 +24,6 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -39,6 +37,8 @@ import com.deerlive.zhuawawa.model.PayModel;
 import com.deerlive.zhuawawa.pay.alipay.Alipay;
 import com.deerlive.zhuawawa.pay.alipay.PayResult;
 import com.deerlive.zhuawawa.pay.wechat.Wechat;
+import com.deerlive.zhuawawa.utils.SPUtils;
+import com.deerlive.zhuawawa.utils.SizeUtils;
 import com.deerlive.zhuawawa.view.GridSpaceItemDecoration;
 import com.deerlive.zhuawawa.view.popup.EasyPopup;
 import com.mancj.slideup.SlideUp;
@@ -46,6 +46,7 @@ import com.mancj.slideup.SlideUp;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 
@@ -177,7 +178,7 @@ public class ChargeActivity extends BaseActivity {
             }
         });
 
-        JSONObject p = new JSONObject();
+        Map<String,String> p=new HashMap<>();
         p.put("token", mToken);
         Api.getPayType(this, p, new OnRequestDataListener() {
             @Override
@@ -235,7 +236,7 @@ public class ChargeActivity extends BaseActivity {
             toast(getResources().getString(R.string.data_error));
             return;
         }
-        JSONObject params = new JSONObject();
+        Map<String,String> params=new HashMap<>();
         params.put("token", mToken);
         params.put("item_id", mPayMethodData.get(mCur).getId());
         params.put("paytype_id", paytype_id);

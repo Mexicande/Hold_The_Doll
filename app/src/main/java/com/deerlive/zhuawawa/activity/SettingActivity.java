@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -12,17 +13,18 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.AppUtils;
-import com.blankj.utilcode.util.LogUtils;
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.StringUtils;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.base.BaseActivity;
 import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.common.WebviewActivity;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
+import com.deerlive.zhuawawa.utils.ActivityUtils;
+import com.deerlive.zhuawawa.utils.AppUtils;
+import com.deerlive.zhuawawa.utils.SPUtils;
 import com.deerlive.zhuawawa.view.supertextview.SuperTextView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 
@@ -122,19 +124,15 @@ public class SettingActivity extends BaseActivity {
     }
 
     public void checkUpdate(View v) {
-        JSONObject params = new JSONObject();
-        try {
-            String versionCode = getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
+        Map<String,String> params=new HashMap<>();
+           String versionCode= AppUtils.getAppVersionCode()+"";
             params.put("ver_num", versionCode);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
 
         Api.checkUpdate(this, params, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
                 JSONObject info = data.getJSONObject("data");
-                if (!StringUtils.isEmpty(info.getString("package"))) {
+                if (!TextUtils.isEmpty(info.getString("package"))) {
                     checkUpgrade(info.getString("package"), info.getString("description"));
                 }
             }

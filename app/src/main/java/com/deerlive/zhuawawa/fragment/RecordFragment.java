@@ -21,9 +21,11 @@ import com.deerlive.zhuawawa.adapter.RecordZjRecyclerListAdapter;
 import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
 import com.deerlive.zhuawawa.model.DanmuMessage;
-import com.deerlive.zhuawawa.utils.Utils;
+import com.deerlive.zhuawawa.utils.SizeUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -67,7 +69,7 @@ public class RecordFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        mRecordZjAdapter = new RecordZjRecyclerListAdapter(getActivity(), mRecordZjDate);
+        mRecordZjAdapter = new RecordZjRecyclerListAdapter( mRecordZjDate);
         LinearLayoutManager m = new LinearLayoutManager(getActivity());
         m.setOrientation(LinearLayoutManager.VERTICAL);
         mRecordZhuaList.setLayoutManager(m);
@@ -90,18 +92,18 @@ public class RecordFragment extends DialogFragment {
         Window window = getDialog().getWindow();
         WindowManager.LayoutParams windowParams = window.getAttributes();
         windowParams.gravity = Gravity.BOTTOM;
-        int i = Utils.dip2px(getActivity(), 220);
+        int i = SizeUtils.dp2px(220);
         windowParams.y = i;
         windowParams.dimAmount = 0.0f;
-
         window.setAttributes(windowParams);
     }
 
     private void getData() {
-        JSONObject params = new JSONObject();
+        Map<String,String> params=new HashMap<>();
+
         params.put("deviceid", mArgument);
         params.put("limit_begin", "0");
-        params.put("limit_num", 20);
+        params.put("limit_num", 20+"");
         Api.getLatestDeviceRecord(getActivity(), params, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {

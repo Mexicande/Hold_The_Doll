@@ -10,13 +10,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ScreenUtils;
-import com.blankj.utilcode.util.SizeUtils;
 import com.bumptech.glide.Glide;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.intf.OnRecyclerViewItemClickListener;
 import com.deerlive.zhuawawa.model.DeviceAndBanner;
 import com.deerlive.zhuawawa.model.Game;
+import com.deerlive.zhuawawa.utils.ScreenUtils;
+import com.deerlive.zhuawawa.utils.SizeUtils;
 import com.deerlive.zhuawawa.view.supertextview.SuperButton;
 
 import java.util.ArrayList;

@@ -3,12 +3,9 @@ package com.deerlive.zhuawawa;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
-import android.util.DisplayMetrics;
 
-import com.blankj.utilcode.util.Utils;
-import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.utils.LogUtils;
-import com.facebook.drawee.backends.pipeline.Fresco;
+import com.deerlive.zhuawawa.utils.Utils;
 import com.hss01248.dialog.StyledDialog;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.model.HttpParams;
@@ -16,7 +13,6 @@ import com.meituan.android.walle.WalleChannelReader;
 import com.mob.MobSDK;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.umeng.analytics.MobclickAgent;
-import com.uuch.adlibrary.utils.DisplayUtil;
 
 import static com.deerlive.zhuawawa.common.Api.APP_VER;
 import static com.deerlive.zhuawawa.common.Api.OS;
@@ -47,12 +43,9 @@ public class MyApplication extends Application {
         // LeakCanary.install(this);
 
         Utils.init(this);
-        LogUtils.init(getInstance());
 
         initOkGo();
 
-        Fresco.initialize(this);
-        initDisplayOpinion();
 
         StyledDialog.init(this);
         //ShareSDK
@@ -79,15 +72,6 @@ public class MyApplication extends Application {
 
         OkGo.getInstance().init(this)
                 .addCommonParams(params);
-    }
-    private void initDisplayOpinion() {
-        DisplayMetrics dm = getResources().getDisplayMetrics();
-        DisplayUtil.density = dm.density;
-        DisplayUtil.densityDPI = dm.densityDpi;
-        DisplayUtil.screenWidthPx = dm.widthPixels;
-        DisplayUtil.screenhightPx = dm.heightPixels;
-        DisplayUtil.screenWidthDip = DisplayUtil.px2dip(getApplicationContext(), dm.widthPixels);
-        DisplayUtil.screenHightDip = DisplayUtil.px2dip(getApplicationContext(), dm.heightPixels);
     }
 
     public static MyApplication getInstance(){

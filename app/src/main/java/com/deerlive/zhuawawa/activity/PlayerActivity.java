@@ -1,18 +1,14 @@
 package com.deerlive.zhuawawa.activity;
 
-import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
-import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -21,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -36,17 +33,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.ActivityUtils;
-import com.blankj.utilcode.util.KeyboardUtils;
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.StringUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.bumptech.glide.Glide;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.adapter.MessageRecyclerListAdapter;
@@ -61,32 +52,28 @@ import com.deerlive.zhuawawa.fragment.RecordZjFragment;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
 import com.deerlive.zhuawawa.model.DanmuMessage;
 import com.deerlive.zhuawawa.model.DeviceAndBanner;
-import com.deerlive.zhuawawa.model.Game;
 import com.deerlive.zhuawawa.model.MessageType;
+import com.deerlive.zhuawawa.utils.ActivityUtils;
+import com.deerlive.zhuawawa.utils.KeyboardUtils;
 import com.deerlive.zhuawawa.utils.LogUtils;
+import com.deerlive.zhuawawa.utils.SPUtils;
 import com.deerlive.zhuawawa.utils.SharedPreferencesUtil;
-import com.deerlive.zhuawawa.view.DragerViewLayout;
-import com.loopj.android.http.RequestParams;
 import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import io.agora.AgoraAPI;
 import io.agora.AgoraAPIOnlySignal;
-import io.agora.NativeAgoraAPI;
 import io.agora.rtc.Constants;
 import io.agora.rtc.RtcEngine;
 import io.agora.rtc.video.VideoCanvas;
-import pl.droidsonroids.gif.GifDrawable;
-import pl.droidsonroids.gif.GifImageView;
 
 public class PlayerActivity extends BaseActivity implements View.OnTouchListener {
 
@@ -180,7 +167,6 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
     private MediaPlayer mMediaPlayer;
     private HashMap<String, Integer> soundID = new HashMap<String, Integer>();
     private MediaProjectionManager mMediaProjectionManager;
-    private ScreenRecorder mRecorder;
 
 
 
@@ -225,7 +211,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
             soundID.put("ready", soundPool.load(this, R.raw.ready, 1));
             soundID.put("success", soundPool.load(this, R.raw.success, 1));
         }
-        initScreenRecorder();
+        //initScreenRecorder();
         initCaozuoListener();
     }
 
@@ -236,61 +222,6 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
         mImageCaozuoUp.setOnTouchListener(this);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
-    private void initScreenRecorder() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mMediaProjectionManager = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
-
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
-    private void startRecord() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (mMediaProjectionManager != null) {
-                Intent captureIntent = mMediaProjectionManager.createScreenCaptureIntent();
-                startActivityForResult(captureIntent, REQUEST_CODE);
-            }
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
-    private void closeRecord() {
-        if (mRecorder != null) {
-            mRecorder.quit();
-            mRecorder = null;
-            myHandler.sendEmptyMessageDelayed(UPLOAD_RECORD, 1000);
-        }
-    }
-
-    private void uploadRecord() {
-        if (file != null) {
-            RequestParams p = new RequestParams();
-            try {
-                p.put("smeta", file);
-                p.put("matchId", mCurMatchId);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            Api.uploadFile(getApplicationContext(), p, new OnRequestDataListener() {
-                @Override
-                public void requestSuccess(int code, JSONObject data) {
-                    if (file.exists()) {
-                        file.delete();
-                        file = null;
-                    }
-                }
-
-                @Override
-                public void requestFailure(int code, String msg) {
-                    if (file.exists()) {
-                        file.delete();
-                        file = null;
-                    }
-                }
-            });
-        }
-    }
 
     private void initBgm() {
         Random r = new Random();
@@ -314,7 +245,6 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
             @Override
             public void onPlayEvent(int i, Bundle bundle) {
 
-                LogUtils.i("TXLiveConstants==",i+"");
 
             }
 
@@ -327,9 +257,9 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
     }
 
     private void enterPlayer() {
-        JSONObject p = new JSONObject();
+        Map<String,String> p=new HashMap<>();
         p.put("token", mToken);
-        p.put("deviceid", mRemoteUid);
+        p.put("deviceid", String.valueOf( mRemoteUid));
         Api.enterPlayer(this, p, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
@@ -384,7 +314,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
     }
 
     private void getChannelKey() {
-        JSONObject params = new JSONObject();
+        Map<String,String> params=new HashMap<>();
         params.put("token", mToken);
         params.put("deviceid", mChannleName);
         Api.getChannelKey(this, params, new OnRequestDataListener() {
@@ -404,7 +334,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
     @OnClick(R.id.mess_send)
     public void messSend(View v) {
         String c = mMessContent.getText().toString();
-        if (StringUtils.isTrimEmpty(c)) {
+        if (TextUtils.isEmpty(c)) {
             toast(getResources().getString(R.string.empty_tip));
             return;
         }
@@ -656,9 +586,11 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
 
     private void startRequestmatchId() {
         mCurMatchId = "";
-        JSONObject p = new JSONObject();
+        Map<String,String> p=new HashMap<>();
+
         p.put("token", mToken);
-        p.put("deviceid", mRemoteUid);
+        p.put("deviceid", String.valueOf(mRemoteUid));
+
         Api.requestConnectDevice(this, p, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
@@ -670,7 +602,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
                 //成功申请到matchid  准备上机
                 if ("1".equals(status)) {
                     mCurMatchId = j.getString("match_id");
-                    if (!StringUtils.isTrimEmpty(j.getString("balance"))) {
+                    if (!TextUtils.isEmpty(j.getString("balance"))) {
                         SPUtils.getInstance().put("balance", j.getString("balance"));
                         mmPlayBalance = j.getString("balance");
                     }
@@ -784,8 +716,9 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
             mRtcEngine.leaveChannel();
             mRtcEngine = null;
         }
-        if (m_agoraAPI != null && m_agoraAPI.isOnline() == 1)
+        if (m_agoraAPI != null && m_agoraAPI.isOnline() == 1) {
             m_agoraAPI.channelLeave(mChannleName);
+        }
         if (mLivePlayer != null) {
             mLivePlayer.stopPlay(true);
             mLivePlayer = null;
@@ -800,7 +733,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
-        closeRecord();
+        //closeRecord();
     }
 
     private Handler myHandler = new Handler(Looper.getMainLooper()) {
@@ -823,7 +756,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
                     break;
                 case MessageType.GAME_CONNECTTED:
                     changeChannelStatus("5", null);
-                    startRecord();
+                   // startRecord();
                     break;
                 case INIT_IM:
                     initAgoraIm();
@@ -838,7 +771,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
                     mPlayerNum.setText((mOnlineNum++) + getResources().getString(R.string.play_num));
                     break;
                 case UPLOAD_RECORD:
-                    uploadRecord();
+                    //uploadRecord();
                     break;
                 case IM_MSG://收到广播消息
                     Bundle d = msg.getData();
@@ -867,6 +800,8 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
                                 break;
                         }
                     }
+                    break;
+                default:
                     break;
             }
         }
@@ -941,7 +876,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
                     }*/
 
                     startTimerPlay();
-                    if (StringUtils.isTrimEmpty(mmPlayBalance) || StringUtils.isTrimEmpty(mmPlayPrice)) {
+                    if (TextUtils.isEmpty(mmPlayBalance) || TextUtils.isEmpty(mmPlayPrice)) {
                         toast(getString(R.string.data_error));
                         return;
                     }
@@ -996,7 +931,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
             if (soundPool != null) {
                 soundPool.play(soundID.get("success"), 1, 1, 0, 0, 1);
             }
-            closeRecord();
+            //closeRecord();
         }
     }
 
@@ -1015,7 +950,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
             if (soundPool != null) {
                 soundPool.play(soundID.get("fail"), 1, 1, 0, 0, 1);
             }
-            closeRecord();
+           // closeRecord();
         } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -1039,6 +974,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
         goTimeLeft = 30;
         mPlayerDaoJishi = new CountDownTimer(30000, 1000) {
 
+            @Override
             public void onTick(long millisUntilFinished) {
                 goTimeLeft--;
                 if (goTimeLeft > 0) {
@@ -1051,6 +987,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
                 }
             }
 
+            @Override
             public void onFinish() {
                 mGoTimerText.setText("0");
                 agoraSendP2p(MessageType.GAME_GO);
@@ -1064,6 +1001,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
         mTryAgainTimeLeft = 3;
         mTryAgainDaoJishi = new CountDownTimer(3000, 1000) {
 
+            @Override
             public void onTick(long millisUntilFinished) {
                 if (mTryAgainTimeLeft-- > 0) {
                     mTimerTryAgain.setText(mTryAgainTimeLeft + "");
@@ -1085,9 +1023,11 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
 
     private void startTimerEnsture() {
         mTimerEnture = new CountDownTimer(8000, 1000) {
+            @Override
             public void onTick(long millisUntilFinished) {
             }
 
+            @Override
             public void onFinish() {
                 toast(getString(R.string.net_error));
                 mImageGameStatus.setEnabled(true);
@@ -1216,6 +1156,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     new Handler().post(new Runnable() {
+                        @Override
                         public void run() {
                             mPlayerContainer.removeView(giftPop);
                         }
@@ -1239,11 +1180,11 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
     @Override
     public void onPause() {
         super.onPause();
-        closeRecord();
+       // closeRecord();
     }
 
 
-    File file = null;//录制的文件名
+  /*  File file = null;//录制的文件名
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
@@ -1261,7 +1202,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
         final int bitrate = 2000000;
         mRecorder = new ScreenRecorder(width, height, bitrate, 1, mediaProjection, file.getAbsolutePath());
         mRecorder.start();
-    }
+    }*/
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
@@ -1282,6 +1223,8 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
                 case R.id.image_caozuo_right:
                     caozuo_right(v);
                     mImageCaozuoRight.setImageResource(R.mipmap.iv_right_press);
+                    break;
+                default:
                     break;
             }
         }

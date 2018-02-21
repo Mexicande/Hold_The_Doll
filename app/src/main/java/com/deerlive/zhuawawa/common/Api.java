@@ -7,43 +7,33 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.LogUtils;
 import com.deerlive.zhuawawa.MainActivity;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.activity.IntegarlCoinListActivity;
 import com.deerlive.zhuawawa.activity.ShouhuoActivity;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
-import com.hss01248.dialog.StyledDialog;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-import com.loopj.android.http.ResponseHandlerInterface;
+import com.deerlive.zhuawawa.utils.AppUtils;
+import com.deerlive.zhuawawa.utils.LogUtils;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
 import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.HttpResponse;
 
 /**
  * Created by Administrator on 2016/8/19.
  * Author: XuDeLong
  */
 public class Api {
-    public static final String APP_VER = "1.3.0";
+    public static final String APP_VER = AppUtils.getAppVersionCode()+"";
     //public static final String HOST = "http://kuailai.deerlive.com/";
     public static final String HOST = "http://doll.anwenqianbao.com/";
     public static final String OS = "android";
     public static final String QUDAO = "kuailai-one";
-
 
     public static final String OS_VER = Build.VERSION.RELEASE;
     private static final String KEY = "HZ1lERfDhUqNuUQ42PfX5lALvKlaTQxT";
@@ -102,30 +92,30 @@ public class Api {
     public static String GET_PAY_TYPE = HOST + "Api/Appconfig/getPayType";
     private static final String GET_LAUNCH_SCREEN = HOST + "Api/SiSi/getLaunchScreen";
     public static final String UPLOAD_RECORD = HOST + "Api/SiSi/userUploadPlayVideo";
-    public static void doLogin(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(LOGIN, context, params,listener);
+    public static void doLogin(final Context context, Map<String, String> params, final OnRequestDataListener listener) {
+        newExcuteMapPost(LOGIN, context, params,listener);
     }
-    public static void getPayType(final Context context, JSONObject params, final OnRequestDataListener listener) {
+    public static void getPayType(final Context context, Map<String, String> params, final OnRequestDataListener listener) {
         //SFProgrssDialog dialog = SFProgrssDialog.show(context,"请稍后...");
-        excutePost(GET_PAY_TYPE, context, params,listener);
+        newExcuteMapPost(GET_PAY_TYPE, context, params,listener);
     }
     public static void applyPostOrDuiHuanWaWa(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        newExcutePost(APPLY_POST_DUIHUAN_WAWA, context, params,listener);
+        newExcuteJsonPost(APPLY_POST_DUIHUAN_WAWA, context, params,listener);
     }
     //广告弹窗
-    public static void getDialog(MainActivity mainActivity, HashMap<String, String> stringStringHashMap, OnRequestDataListener onRequestDataListener) {
+    public static void getDialog(MainActivity mainActivity, Map<String, String> stringStringHashMap, OnRequestDataListener onRequestDataListener) {
         newExcuteMapPost(GET_DIALOG, mainActivity, stringStringHashMap,onRequestDataListener);
 
     }
-    public static void getNoTakenWawa(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(GET_NOTAKEN_WAWA, context, params,listener);
+    public static void getNoTakenWawa(final Context context, Map<String, String> params, final OnRequestDataListener listener) {
+        newExcuteMapPost(GET_NOTAKEN_WAWA, context, params,listener);
     }
 
-    public static void requestConnectDevice(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(REQUEST_CONNECT_DEVICE, context, params,listener);
+    public static void requestConnectDevice(final Context context,  Map<String, String> params, final OnRequestDataListener listener) {
+        newExcuteMapPost(REQUEST_CONNECT_DEVICE, context, params,listener);
     }
-    public static void beginPay(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(BEGIN_PAY, context, params,listener);
+    public static void beginPay(final Context context, Map<String, String> params, final OnRequestDataListener listener) {
+        newExcuteMapPost(BEGIN_PAY, context, params,listener);
     }
 
     //积分商城商品
@@ -141,15 +131,15 @@ public class Api {
     public static void getPayMethod(final Context context, Map<String,String> params, final OnRequestDataListener listener) {
         newExcuteMapPost(GET_PAY_METHOD, context, params,listener);
     }
-    public static void getLaunchScreen(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(GET_LAUNCH_SCREEN, context, params, listener);
+    public static void getLaunchScreen(final Context context,  Map<String,String> params, final OnRequestDataListener listener) {
+        newExcuteMapPost(GET_LAUNCH_SCREEN, context, params, listener);
     }
     public static void getUserInfo(final Context context, Map<String,String> params, final OnRequestDataListener listener) {
         newExcuteMapPost(GET_USER_INFO, context, params,listener);
     }
-
-    public static void getZhuaRecord(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(GET_ZHUA_RECORD, context, params,listener);
+    //抓取记录
+    public static void getZhuaRecord(final Context context, Map<String,String> params, final OnRequestDataListener listener) {
+        newExcuteMapPost(GET_ZHUA_RECORD, context, params,listener);
     }
     //积分商城兑换记录
     public static void getDuiRecord(FragmentActivity context,Map<String,String> params, OnRequestDataListener listener) {
@@ -172,8 +162,9 @@ public class Api {
     public static void getShouHuoLocation(final Context context, Map<String, String>  params, final OnRequestDataListener listener) {
         newExcuteMapPost(GET_SHOUHUO_LOCATION, context, params,listener);
     }
-    public static void getCoinRecord(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(GET_COIN_RECORD, context, params,listener);
+    //金币记录
+    public static void getCoinRecord(final Context context, Map<String, String>  params, final OnRequestDataListener listener) {
+        newExcuteMapPost(GET_COIN_RECORD, context, params,listener);
     }
     //收货地址修改Andtianjia
 
@@ -187,21 +178,21 @@ public class Api {
     }
 
 
-    public static void getLatestDeviceRecord(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(GET_LATEST_DEVICE_RECORD, context, params,listener);
+    public static void getLatestDeviceRecord(final Context context, Map<String, String>  params, final OnRequestDataListener listener) {
+        newExcuteMapPost(GET_LATEST_DEVICE_RECORD, context, params,listener);
     }
 
 
-    public static void enterPlayer(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(ENTER_PLAYER, context, params,listener);
+    public static void enterPlayer(final Context context, Map<String, String>  params, final OnRequestDataListener listener) {
+        newExcuteMapPost(ENTER_PLAYER, context, params,listener);
     }
 
-    public static void getChannelKey(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(GET_CHANNEL_KEY, context, params,listener);
+    public static void getChannelKey(final Context context, Map<String, String>  params, final OnRequestDataListener listener) {
+        newExcuteMapPost(GET_CHANNEL_KEY, context, params,listener);
     }
 
-    public static void getBanner(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(GET_BANNER, context, params,listener);
+    public static void getBanner(final Context context, Map<String, String>   params, final OnRequestDataListener listener) {
+        newExcuteMapPost(GET_BANNER, context, params,listener);
     }
 
     //device banner
@@ -209,13 +200,13 @@ public class Api {
         newExcuteMapPost(GET_GAME, context, params,listener);
     }
 
-    public static void checkUpdate(final Context context, JSONObject params, final OnRequestDataListener listener) {
-        excutePost(CHECK_UPDATE, context, params, listener);
+    public static void checkUpdate(final Context context, Map<String, String> params, final OnRequestDataListener listener) {
+        newExcuteMapPost(CHECK_UPDATE, context, params, listener);
     }
-
-    public static void uploadFile(final Context context, RequestParams params, final OnRequestDataListener listener) {
+    //视频录制
+   /* public static void uploadFile(final Context context, RequestParams params, final OnRequestDataListener listener) {
         excutePostFile(UPLOAD_RECORD, context, params, listener);
-    }
+    }*/
 
     public static JSONObject getJsonObject(Context context, int statusCode, byte[] responseBody, OnRequestDataListener listener) {
 
@@ -239,19 +230,9 @@ public class Api {
         return null;
     }
 
-    protected static RequestParams getRequestParams(JSONObject params) {
-        RequestParams requestParams = new RequestParams();
-        Iterator<?> it = params.keySet().iterator();
-        while (it.hasNext()) {
-            String key = (String) it.next();
-            String value = (String) params.getString(key);
-            requestParams.put(key, value);
-        }
-        return requestParams;
-    }
 
     private static void newExcuteMapPost(String storeIntegar, Context context, Map<String,String> params, final OnRequestDataListener listener) {
-        final String net_error = context.getString(R.string.net_error);
+        final String netError = context.getString(R.string.net_error);
 
         OkGo.<String>post(storeIntegar)
                 .tag(context)
@@ -268,7 +249,7 @@ public class Api {
                                 listener.requestFailure(-1, jsonObject.getString("descrp"));
                             }
                         }else {
-                            listener.requestFailure(-1, net_error);
+                            listener.requestFailure(-1, netError);
 
                         }
                     }
@@ -276,16 +257,15 @@ public class Api {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        listener.requestFailure(-1, net_error);
+                        listener.requestFailure(-1, netError);
                     }
                 });
 
 
     }
 
-
-    protected static void newExcutePost(String url, final Context context, JSONObject params, final OnRequestDataListener listener){
-        final String net_error = context.getString(R.string.net_error);
+    protected static void newExcuteJsonPost(String url, final Context context, JSONObject params, final OnRequestDataListener listener){
+        final String netError = context.getString(R.string.net_error);
 
         String s = JSON.toJSONString(params);
         OkGo.<String>post(url)
@@ -303,7 +283,7 @@ public class Api {
                                 listener.requestFailure(-1, jsonObject.getString("descrp"));
                             }
                         }else {
-                            listener.requestFailure(-1, net_error);
+                            listener.requestFailure(-1, netError);
 
                         }
                     }
@@ -311,138 +291,14 @@ public class Api {
                     @Override
                     public void onError(Response<String> response) {
                         super.onError(response);
-                        listener.requestFailure(-1, net_error);
+                        listener.requestFailure(-1, netError);
                     }
                 });
 
 
     }
 
-    protected static void excutePost(String url, final Context context, JSONObject params, final OnRequestDataListener listener) {
-        params.put("os", OS);
-        params.put("soft_ver", APP_VER);
-        params.put("os_ver", OS_VER);
-        params.put("qudao",QUDAO);
 
-        //String stamp = getTime();
-        //params.put("timestamp",stamp);
-        //params.put("sign",getMD5(KEY+stamp));
-        final String net_error = context.getString(R.string.net_error);
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.setTimeout(30000);
-        RequestParams requestParams = getRequestParams(params);
-
-        client.post(context, url, requestParams, new AsyncHttpResponseHandler() {
-            
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    if (responseBody != null) {
-                        JSONObject data = getJsonObject(context, statusCode, responseBody, listener);
-                        if (data != null) {
-                            if(200 == data.getIntValue("code")){
-                                listener.requestSuccess(statusCode, data);
-                            }else {
-                                listener.requestFailure(-1, data.getString("descrp"));
-                            }
-                        }else{
-                            listener.requestFailure(-1, net_error);
-                        }
-                    } else {
-                        if (listener != null) {
-                            listener.requestFailure(-1, net_error);
-                        }
-                    }
-                } catch (Exception e) {
-                    //listener.requestFailure(-1, net_error);
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                LogUtils.d("onFailure===",statusCode);
-
-
-                try {
-                    if (null != context && responseBody != null) {
-                        String response = "";
-                        response = new String(responseBody, "UTF-8");
-                        if (listener != null) {
-                            listener.requestFailure(-1, net_error);
-                        }
-                    } else {
-                        if (listener != null) {
-                            listener.requestFailure(-1, net_error);
-                        }
-                    }
-                } catch (Exception e) {
-
-                }
-
-            }
-        });
-    }
-
-
-    protected static void excutePostFile(String url, final Context context, RequestParams requestParams, final OnRequestDataListener listener) {
-        requestParams.put("os", OS);
-        requestParams.put("soft_ver", APP_VER);
-        requestParams.put("os_ver", OS_VER);
-        //String stamp = getTime();
-        //params.put("timestamp",stamp);
-        //params.put("sign",getMD5(KEY+stamp));
-        final String net_error = context.getString(R.string.net_error);
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.setTimeout(300000);
-        client.post(context, url, requestParams, new AsyncHttpResponseHandler() {
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                try {
-                    if (responseBody != null) {
-                        JSONObject data = getJsonObject(context, statusCode, responseBody, listener);
-                        if (data != null) {
-                            if(200 == data.getIntValue("code")){
-                                listener.requestSuccess(statusCode, data);
-                            }else {
-                                listener.requestFailure(-1, data.getString("descrp"));
-                            }
-
-                        }else{
-                            listener.requestFailure(-1, net_error);
-                        }
-                    } else {
-                        if (listener != null) {
-                            listener.requestFailure(-1, net_error);
-                        }
-                    }
-                } catch (Exception e) {
-                    //listener.requestFailure(-1, net_error);
-                }
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                try {
-                    if (null != context && responseBody != null) {
-                        String response = "";
-                        response = new String(responseBody, "UTF-8");
-                        LogUtils.i("response=" + response);
-                        if (listener != null) {
-                            listener.requestFailure(-1, net_error);
-                        }
-                    } else {
-                        if (listener != null) {
-                            listener.requestFailure(-1, net_error);
-                        }
-                    }
-                } catch (Exception e) {
-
-                }
-
-            }
-        });
-    }
 
     private static String getMD5(String str) {
         MessageDigest messageDigest = null;
@@ -456,25 +312,27 @@ public class Api {
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < b.length; i++) {
             int a = b[i];
-            if (a < 0)
+            if (a < 0) {
                 a += 256;
-            if (a < 16)
+            }
+            if (a < 16) {
                 buf.append("0");
+            }
             buf.append(Integer.toHexString(a));
 
         }
-        return buf.toString();  //32位
+        return buf.toString();
+        //32位
     }
 
     public static String getTime() {
 
-        long time = System.currentTimeMillis() / 1000;//获取系统时间的10位的时间戳
+        long time = System.currentTimeMillis() / 1000;
+        //获取系统时间的10位的时间戳
 
         String str = String.valueOf(time);
 
         return str;
 
     }
-
-
 }

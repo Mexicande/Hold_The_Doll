@@ -28,17 +28,6 @@ public class AdressAdapter extends BaseItemDraggableAdapter<AddressBean.AddrBean
                 .setText(R.id.tv_userPhone,item.getMobile())
                 .setText(R.id.tv_address,item.getCity()+item.getAddress())
                 .addOnClickListener(R.id.iv_editext)
-               // .addOnClickListener(R.id.checkbox_address)
-                /*.setOnCheckedChangeListener(R.id.checkbox_address, new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        if(!isChecked){
-                            helper.setBackgroundColor(R.id.layout_bg,R.color.e_white);
-                        }else {
-                            helper.setBackgroundColor(R.id.layout_bg,R.color.white);
-                        }
-                    }
-                })*/
                 ;
 
 

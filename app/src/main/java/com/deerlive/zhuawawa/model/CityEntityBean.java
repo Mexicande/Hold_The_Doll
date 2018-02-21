@@ -6,18 +6,14 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * TODO<json数据源>
- *
- * @author: 小嵩
- * @date: 2017/3/16 15:36
+ * Created by apple on 2018/2/14.
  */
 
-public class JsonBean implements IPickerViewData ,Serializable{
-
+public class CityEntityBean implements IPickerViewData,Serializable {
 
     /**
-     * name : 省份
-     * city : [{"name":"北京市","area":["东城区","西城区","崇文区","宣武区","朝阳区"]}]
+     * city : [{"area":["东城区","西城区","崇文区","宣武区","朝阳区","丰台区","石景山区","海淀区","门头沟区","房山区","通州区","顺义区","昌平区","大兴区","平谷区","怀柔区","密云县","延庆县"],"name":"北京市"}]
+     * name : 北京市
      */
 
     private String name;
@@ -31,28 +27,25 @@ public class JsonBean implements IPickerViewData ,Serializable{
         this.name = name;
     }
 
-    public List<CityBean> getCityList() {
+    public List<CityBean> getCity() {
         return city;
     }
 
-    public void setCityList(List<CityBean> city) {
+    public void setCity(List<CityBean> city) {
         this.city = city;
+
     }
 
-    // 实现 IPickerViewData 接口，
-    // 这个用来显示在PickerView上面的字符串，
-    // PickerView会通过IPickerViewData获取getPickerViewText方法显示出来。
     @Override
     public String getPickerViewText() {
         return this.name;
     }
 
 
-
-    public static class CityBean implements Serializable{
+    public static class CityBean implements Serializable {
         /**
-         * name : 城市
-         * area : ["东城区","西城区","崇文区","昌平区"]
+         * area : ["东城区","西城区","崇文区","宣武区","朝阳区","丰台区","石景山区","海淀区","门头沟区","房山区","通州区","顺义区","昌平区","大兴区","平谷区","怀柔区","密云县","延庆县"]
+         * name : 北京市
          */
 
         private String name;
@@ -83,11 +76,14 @@ public class JsonBean implements IPickerViewData ,Serializable{
         }
     }
 
+
     @Override
     public String toString() {
-        return "JsonBean{" +
+        return "CityEntityBean{" +
                 "name='" + name + '\'' +
                 ", city=" + city +
                 '}';
     }
+
+
 }

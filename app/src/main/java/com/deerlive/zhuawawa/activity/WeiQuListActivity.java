@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.blankj.utilcode.util.SPUtils;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.adapter.WeiQuRecyclerListAdapter;
 import com.deerlive.zhuawawa.base.BaseActivity;
@@ -19,6 +18,7 @@ import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.intf.OnRecyclerViewItemClickListener;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
 import com.deerlive.zhuawawa.model.GrabBean;
+import com.deerlive.zhuawawa.utils.SPUtils;
 import com.deerlive.zhuawawa.view.dialog.CashDialog;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
@@ -26,7 +26,9 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 
@@ -97,10 +99,11 @@ public class WeiQuListActivity extends BaseActivity implements OnRecyclerViewIte
     }
 
     private void getGameData(final int limit_begin) {
-        JSONObject params = new JSONObject();
+
+        Map<String,String> params=new HashMap<>();
         params.put("token", mToken);
-        params.put("limit_begin", limit_begin);
-        params.put("limit_num", 10);
+        params.put("limit_begin", String.valueOf(limit_begin));
+        params.put("limit_num", 10+"");
         Api.getNoTakenWawa(this, params, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {

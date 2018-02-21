@@ -8,11 +8,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.blankj.utilcode.util.SnackbarUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.deerlive.zhuawawa.R;
-
-import butterknife.ButterKnife;
 
 /**
  * Created by Administrator on 2017/10/23.

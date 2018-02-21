@@ -7,28 +7,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bigkoo.pickerview.OptionsPickerView;
 import com.bigkoo.pickerview.listener.CustomListener;
-import com.blankj.utilcode.util.RegexUtils;
-import com.blankj.utilcode.util.SPUtils;
-import com.blankj.utilcode.util.ToastUtils;
-import com.blankj.utilcode.util.Utils;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.base.BaseActivity;
 import com.deerlive.zhuawawa.common.Api;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
 import com.deerlive.zhuawawa.model.AddressBean;
-import com.deerlive.zhuawawa.model.JsonBean;
+import com.deerlive.zhuawawa.model.CityEntityBean;
 import com.deerlive.zhuawawa.utils.GetJsonDataUtil;
+import com.deerlive.zhuawawa.utils.RegexUtils;
+import com.deerlive.zhuawawa.utils.SPUtils;
+import com.deerlive.zhuawawa.utils.ToastUtils;
 import com.deerlive.zhuawawa.view.supertextview.SuperTextView;
-import com.google.gson.Gson;
-
-
-import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -50,7 +48,7 @@ public class AddAddressActivity extends BaseActivity {
     SuperTextView settingDefault;
     @Bind(R.id.tv_address)
     TextView tvAddress;
-    private ArrayList<JsonBean> options1Items = new ArrayList<>();
+    private List<CityEntityBean> options1Items = new ArrayList<>();
     private ArrayList<ArrayList<String>> options2Items = new ArrayList<>();
     private ArrayList<ArrayList<ArrayList<String>>> options3Items = new ArrayList<>();
     private String address="";
@@ -108,6 +106,8 @@ public class AddAddressActivity extends BaseActivity {
                 break;
             case R.id.layout_city:
                 selectCity();
+                break;
+            default:
                 break;
         }
     }
@@ -171,76 +171,81 @@ public class AddAddressActivity extends BaseActivity {
         });
     }
 
-
+    /**
+     * 添加省份数据
+     *
+     * 注意：如果是添加的JavaBean实体，则实体类需要实现 IPickerViewData 接口，
+     * PickerView会通过getPickerViewText方法获取字符串显示出来。
+     */
     private void initJsonData() {//解析数据
-        String JsonData = new GetJsonDataUtil().getJson(this);
-       // ToastUtils.showShort(JsonData);
+        String jsondata = new GetJsonDataUtil().getJson(this);
 
-        ArrayList<JsonBean> jsonBean = parseData(JsonData);//用Gson 转成实体
+        List<CityEntityBean> jsonBean = parseData(jsondata);
         options1Items = jsonBean;
 
-       // ToastUtils.showShort(jsonlsit.toString());
-        /**
-         * 添加省份数据
-         *
-         * 注意：如果是添加的JavaBean实体，则实体类需要实现 IPickerViewData 接口，
-         * PickerView会通过getPickerViewText方法获取字符串显示出来。
-         */
 
+        for (int i=0;i<jsonBean.size();i++){
+            //遍历省份
+            ArrayList<String> citylist = new ArrayList<>();
+            //该省的城市列表（第二级）
+            ArrayList<ArrayList<String>> provinceArealist = new ArrayList<>();
+            //该省的所有地区列表（第三极）
 
-        for (int i=0;i<jsonBean.size();i++){  //遍历省份
-            ArrayList<String> CityList = new ArrayList<>();//该省的城市列表（第二级）
-            ArrayList<ArrayList<String>> Province_AreaList = new ArrayList<>();//该省的所有地区列表（第三极）
+            for (int c=0; c<jsonBean.get(i).getCity().size(); c++){
+                //遍历该省份的所有城市
+                String cityname = jsonBean.get(i).getCity().get(c).getName();
+                citylist.add(cityname);
+                //添加城市
 
-            for (int c=0; c<jsonBean.get(i).getCityList().size(); c++){//遍历该省份的所有城市
-                String CityName = jsonBean.get(i).getCityList().get(c).getName();
-                CityList.add(CityName);//添加城市
-
-                ArrayList<String> City_AreaList = new ArrayList<>();//该城市的所有地区列表
+                ArrayList<String> arrayList = new ArrayList<>();
+                //该城市的所有地区列表
 
                 //如果无地区数据，建议添加空字符串，防止数据为null 导致三个选项长度不匹配造成崩溃
-                if (jsonBean.get(i).getCityList().get(c).getArea() == null
-                        ||jsonBean.get(i).getCityList().get(c).getArea().size()==0) {
-                    City_AreaList.add("");
+                if (jsonBean.get(i).getCity().get(c).getArea() == null
+                        ||jsonBean.get(i).getCity().get(c).getArea().size()==0) {
+                    arrayList.add("");
                 }else {
 
                     //该城市对应地区所有数据
                     //添加该城市所有地区数据
-                    City_AreaList.addAll(jsonBean.get(i).getCityList().get(c).getArea());
+                    arrayList.addAll(jsonBean.get(i).getCity().get(c).getArea());
 
-                   /* for (int d=0; d < jsonBean.get(i).getCityList().get(c).getArea().size(); d++) {//该城市对应地区所有数据
-                        String AreaName = jsonBean.get(i).getCityList().get(c).getArea().get(d);
-
-                        City_AreaList.add(AreaName);//添加该城市所有地区数据
-                    }*/
 
                 }
-                Province_AreaList.add(City_AreaList);//添加该省所有地区数据
+                provinceArealist.add(arrayList);
+                //添加该省所有地区数据
             }
 
 
-            options2Items.add(CityList);
+            options2Items.add(citylist);
 
 
 
-            options3Items.add(Province_AreaList);
+            options3Items.add(provinceArealist);
         }
 
 
     }
 
 
-    public ArrayList<JsonBean> parseData(String result) {//Gson 解析
-        ArrayList<JsonBean> detail = new ArrayList<>();
+    public List<CityEntityBean> parseData(String result) {//Gson 解析
+        List<CityEntityBean> detail = new ArrayList<>();
+
+
         try {
-            JSONArray data = new JSONArray(result);
-            Gson gson = new Gson();
-            for (int i = 0; i < data.length(); i++) {
-                JsonBean entity = gson.fromJson(data.optJSONObject(i).toString(), JsonBean.class);
-                detail.add(entity);
+
+            JSONArray objects = JSONArray.parseArray(result);
+
+            for (int i = 0; i < objects.size(); i++) {
+
+                JSONObject objects1 = objects.getJSONObject(i);
+
+                CityEntityBean jsonBean = JSON.parseObject(JSON.toJSONString(objects1), CityEntityBean.class);
+
+                detail.add(jsonBean);
             }
         } catch (Exception e) {
-            e.printStackTrace(); 
+            e.printStackTrace();
         }
         return detail;
     }
@@ -274,13 +279,17 @@ public class AddAddressActivity extends BaseActivity {
                     }
                 })
                 .setDividerColor(getResources().getColor(R.color.line))
-                .setTextColorCenter(Color.parseColor("#82b2e3")) //设置选中项文字颜色
+                .setTextColorCenter(Color.parseColor("#82b2e3"))
+                 //设置选中项文字颜色
                 .setContentTextSize(20)
                 .isDialog(true)
                 .build();
-        pvOptions.setPicker(options1Items);//一级选择器
-        pvOptions.setPicker(options1Items, options2Items);//二级选择器
-        pvOptions.setPicker(options1Items, options2Items, options3Items);//三级选择器
+        pvOptions.setPicker(options1Items);
+        //一级选择器
+        pvOptions.setPicker(options1Items, options2Items);
+        //二级选择器
+        pvOptions.setPicker(options1Items, options2Items, options3Items);
+        //三级选择器
         pvOptions.show();
 
     }

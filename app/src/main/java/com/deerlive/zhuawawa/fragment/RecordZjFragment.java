@@ -18,6 +18,8 @@ import com.deerlive.zhuawawa.intf.OnRequestDataListener;
 import com.deerlive.zhuawawa.model.DanmuMessage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.Bind;
 
@@ -51,7 +53,7 @@ public class RecordZjFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mRecordZjAdapter = new RecordZjRecyclerListAdapter(getContext(),mRecordZjDate);
+        mRecordZjAdapter = new RecordZjRecyclerListAdapter(mRecordZjDate);
         LinearLayoutManager m = new LinearLayoutManager(getContext());
         m.setOrientation(LinearLayoutManager.VERTICAL);
         mRecordZhuaList.setLayoutManager(m);
@@ -60,10 +62,10 @@ public class RecordZjFragment extends BaseFragment {
     }
 
     private void getData() {
-        JSONObject params = new JSONObject();
+        Map<String,String> params=new HashMap<>();
         params.put("deviceid",mArgument);
         params.put("limit_begin","0");
-        params.put("limit_num",20);
+        params.put("limit_num",20+"");
         Api.getLatestDeviceRecord(getContext(), params, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
