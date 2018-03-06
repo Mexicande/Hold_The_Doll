@@ -7,7 +7,8 @@
     android:layout_height="80dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/white"
-    card_view:cardElevation="0.1dp"
+    app:cardElevation="0.8dp"
+
     android:layout_marginTop="10dp">
     <RelativeLayout
         android:layout_gravity="center_vertical"

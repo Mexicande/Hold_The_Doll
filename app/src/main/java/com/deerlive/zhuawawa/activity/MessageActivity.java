@@ -42,6 +42,7 @@ public class MessageActivity extends BaseActivity {
     private String mToken;
     private ArrayList<NoticeMessageBean.InfoBean> mListData = new ArrayList();
     private NoticeAdapter mAdapter = new NoticeAdapter(mListData);
+    private View notDataView;
 
 
     @Override
@@ -71,6 +72,7 @@ public class MessageActivity extends BaseActivity {
                 getGameData(mListData.size());
             }
         });
+        notDataView = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) mRecyclerView.getParent(), false);
 
     }
 
@@ -93,9 +95,6 @@ public class MessageActivity extends BaseActivity {
                 }
                 NoticeMessageBean noticeMessageBean = JSON.parseObject(data.toString(), NoticeMessageBean.class);
                 mListData.addAll(noticeMessageBean.getInfo());
-                if(mListData.size()!=0){
-                    ivDefault.setVisibility(View.GONE);
-                }
                 mAdapter.setNewData(mListData);
             }
 
@@ -103,8 +102,7 @@ public class MessageActivity extends BaseActivity {
             public void requestFailure(int code, String msg) {
                 toast(msg);
                 if(mListData.size()==0){
-                    ivDefault.setVisibility(View.VISIBLE);
-
+                    mAdapter.setEmptyView(notDataView);
                 }
                 if (mRefreshLayout.isRefreshing()) {
                     mRefreshLayout.finishRefresh();

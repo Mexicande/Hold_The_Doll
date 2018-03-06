@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,7 +43,8 @@ public class RecordZhuaListActivity extends BaseActivity implements OnRecyclerVi
     ImageView ivDefault;
     private String mToken;
     private ArrayList<DanmuMessage> mListData = new ArrayList();
-    private RecordZqRecyclerListAdapter mAdapter = new RecordZqRecyclerListAdapter(this, mListData);
+    private RecordZqRecyclerListAdapter mAdapter = new RecordZqRecyclerListAdapter( mListData);
+    private View notDataView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +73,8 @@ public class RecordZhuaListActivity extends BaseActivity implements OnRecyclerVi
                 getGameData(mListData.size());
             }
         });
-        mAdapter.setOnRecyclerViewItemClickListener(this);
+        notDataView = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) mRecyclerView.getParent(), false);
+
     }
 
     private void getGameData(final int limit_begin) {
@@ -103,6 +106,8 @@ public class RecordZhuaListActivity extends BaseActivity implements OnRecyclerVi
                     g.setRemoteUid(t.getString("video_status"));
                     mListData.add(g);
                 }
+                mAdapter.setNewData(mListData);
+
                 if(mListData.size()!=0){
                     ivDefault.setVisibility(View.GONE);
                 }
@@ -114,8 +119,7 @@ public class RecordZhuaListActivity extends BaseActivity implements OnRecyclerVi
             public void requestFailure(int code, String msg) {
                 toast(msg);
                 if(mListData.size()==0){
-                    ivDefault.setVisibility(View.VISIBLE);
-
+                    mAdapter.setEmptyView(notDataView);
                 }
                 if (mRefreshLayout.isRefreshing()) {
                     mRefreshLayout.finishRefresh();

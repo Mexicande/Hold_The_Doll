@@ -6,6 +6,8 @@
     app:cardCornerRadius="5dp"
     app:cardUseCompatPadding="true"
     android:gravity="center"
+    app:cardElevation="0.8dp"
+
     android:foreground="?android:attr/selectableItemBackground"
     >
     <LinearLayout

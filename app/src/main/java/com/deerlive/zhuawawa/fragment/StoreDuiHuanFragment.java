@@ -42,6 +42,7 @@ public class StoreDuiHuanFragment extends Fragment {
     SmartRefreshLayout mRefreshLayout;
     @Bind(R.id.iv_default)
     ImageView ivDefault;
+    private View notDataView;
 
     public StoreDuiHuanFragment() {
         // Required empty public constructor
@@ -81,6 +82,8 @@ public class StoreDuiHuanFragment extends Fragment {
                 getGameData(mListData.size());
             }
         });
+        notDataView = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) mRecyclerView.getParent(), false);
+
     }
 
     private void getGameData(final int limit_begin) {
@@ -93,29 +96,13 @@ public class StoreDuiHuanFragment extends Fragment {
         Api.getDuiRecord(getActivity(), params, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
-
                 ZhuaRecordBean recordBean = JSON.parseObject(data.toString(), ZhuaRecordBean.class);
 
-                switch (limit_begin) {
-                    case 0:
-                        mListData.clear();
-                        mListData.addAll(recordBean.getInfo());
-                        if (mListData.size() == 0) {
-                            ivDefault.setVisibility(View.VISIBLE);
-                        } else {
-                            ivDefault.setVisibility(View.GONE);
-
-                        }
-                        mAdapter.setNewData(mListData);
-                        break;
-                    default:
-                        mListData.addAll(recordBean.getInfo());
-                        mAdapter.addData(mListData);
-                        break;
+                if (limit_begin == 0) {
+                    mListData.clear();
                 }
-                if(mListData.size()!=0){
-                    ivDefault.setVisibility(View.GONE);
-                }
+                mListData.addAll(recordBean.getInfo());
+                mAdapter.setNewData(mListData);
                 if (mRefreshLayout.isRefreshing()) {
                     mRefreshLayout.finishRefresh();
                 }
@@ -127,8 +114,7 @@ public class StoreDuiHuanFragment extends Fragment {
             @Override
             public void requestFailure(int code, String msg) {
                 if(mListData.size()==0){
-                    ivDefault.setVisibility(View.VISIBLE);
-
+                    mAdapter.setEmptyView(notDataView);
                 }
                 if (mRefreshLayout.isRefreshing()) {
                     mRefreshLayout.finishRefresh();

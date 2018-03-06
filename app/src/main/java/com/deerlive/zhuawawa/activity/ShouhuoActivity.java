@@ -1,13 +1,12 @@
 package com.deerlive.zhuawawa.activity;
 
 import android.content.Intent;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -17,8 +16,6 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.callback.ItemDragAndSwipeCallback;
-import com.chad.library.adapter.base.listener.OnItemSwipeListener;
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.adapter.AdressAdapter;
 import com.deerlive.zhuawawa.base.BaseActivity;
@@ -30,6 +27,9 @@ import com.deerlive.zhuawawa.view.popup.EasyPopup;
 import com.deerlive.zhuawawa.view.popup.HorizontalGravity;
 import com.deerlive.zhuawawa.view.popup.VerticalGravity;
 import com.hss01248.dialog.StyledDialog;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,13 +46,16 @@ public class ShouhuoActivity extends BaseActivity {
     ImageView ivAdd;
     @Bind(R.id.recycler)
     RecyclerView recycler;
-    @Bind(R.id.iv_default)
-    ImageView ivDefault;
+    @Bind(R.id.layout_top_back)
+    ImageView layoutTopBack;
+    @Bind(R.id.refreshLayout)
+    SmartRefreshLayout mRefreshLayout;
     private String mToken;
     private EasyPopup mRvPop;
     private TextView tv_delete;
     private List<AddressBean.AddrBean> list = new ArrayList<>();
     private AdressAdapter adressAdapter;
+    private View notDataView;
 
     private final int REQUESTION_CODE = 100;
     private final int RESULT_CODE = 200;
@@ -68,7 +71,6 @@ public class ShouhuoActivity extends BaseActivity {
         ivAdd.setVisibility(View.VISIBLE);
         mToken = SPUtils.getInstance().getString("token");
         initRecycler();
-        initDate();
         setListener();
     }
 
@@ -115,10 +117,13 @@ public class ShouhuoActivity extends BaseActivity {
         recycler.setLayoutManager(new LinearLayoutManager(this));
         adressAdapter = new AdressAdapter(null);
         recycler.setAdapter(adressAdapter);
-      /*  ItemDragAndSwipeCallback itemDragAndSwipeCallback = new ItemDragAndSwipeCallback(adressAdapter);
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(itemDragAndSwipeCallback);
-        itemTouchHelper.attachToRecyclerView(recycler);
-        adressAdapter.enableSwipeItem();*/
+        mRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(RefreshLayout refreshlayout) {
+                initDate();
+            }
+        });
+        notDataView = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) recycler.getParent(), false);
 
 
         mRvPop = new EasyPopup(this)
@@ -133,22 +138,18 @@ public class ShouhuoActivity extends BaseActivity {
                 .createPopup();
 
 
-
-
-
         adressAdapter.setOnItemLongClickListener(new BaseQuickAdapter.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
-                showPopup(view,position);
+                showPopup(view, position);
                 return false;
             }
         });
 
 
-
     }
 
-    private void showPopup(View view , final int position) {
+    private void showPopup(View view, final int position) {
         mRvPop.showAtAnchorView(view, VerticalGravity.ABOVE, HorizontalGravity.CENTER);
         tv_delete = mRvPop.getView(R.id.tv_comment);
 
@@ -157,7 +158,7 @@ public class ShouhuoActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 mRvPop.dismiss();
-                deleteAddress( position);
+                deleteAddress(position);
             }
         });
 
@@ -165,7 +166,7 @@ public class ShouhuoActivity extends BaseActivity {
     }
 
     private void deleteAddress(final int pos) {
-        Log.i("position",pos+"");
+        Log.i("position", pos + "");
 
         Map<String, String> p = new HashMap<>();
         p.put("token", mToken);
@@ -173,7 +174,7 @@ public class ShouhuoActivity extends BaseActivity {
         Api.getDeleteAddress(this, p, new OnRequestDataListener() {
             @Override
             public void requestSuccess(int code, JSONObject data) {
-                Log.i("position",pos+"");
+                Log.i("position", pos + "");
                 adressAdapter.remove(pos);
                 //list.remove(pos);
             }
@@ -192,24 +193,25 @@ public class ShouhuoActivity extends BaseActivity {
             @Override
             public void requestSuccess(int code, JSONObject data) {
                 AddressBean adressBean = JSON.parseObject(data.toString(), AddressBean.class);
-                if(list.size()!=0){
+                if (list.size() != 0) {
                     list.clear();
                 }
-                list.addAll(adressBean.getAddr());
-                if(list.size()!=0){
-                    ivDefault.setVisibility(View.GONE);
+                if (mRefreshLayout.isRefreshing()) {
+                    mRefreshLayout.finishRefresh();
                 }
+                if (mRefreshLayout.isLoading()) {
+                    mRefreshLayout.finishLoadmore();
+                }
+                list.addAll(adressBean.getAddr());
                 adressAdapter.setNewData(list);
             }
 
             @Override
             public void requestFailure(int code, String msg) {
-                toast(msg);
-                if(list.size()==0){
-                    ivDefault.setVisibility(View.VISIBLE);
-                }else {
-                    ivDefault.setVisibility(View.GONE);
+                if (list.size() == 0) {
+                    adressAdapter.setEmptyView(notDataView);
                 }
+                toast(msg);
             }
         });
     }

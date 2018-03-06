@@ -414,7 +414,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
             mRtcEngine.setChannelProfile(Constants.CHANNEL_PROFILE_LIVE_BROADCASTING);
             mRtcEngine.enableVideo();
             //mRtcEngine.disableVideo();
-            mRtcEngine.setVideoProfile(Constants.VIDEO_PROFILE_360P_10, true);
+            mRtcEngine.setVideoProfile(Constants.VIDEO_PROFILE_480P, true);
             mRtcEngine.setClientRole(Constants.CLIENT_ROLE_BROADCASTER, "");
             mRtcEngine.setVideoQualityParameters(true);
 

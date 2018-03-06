@@ -44,7 +44,7 @@ public class UserCenterOtherActivity extends BaseActivity {
     @Bind(R.id.recyclerview)
     RecyclerView mRecyclerView;
     private ArrayList<DanmuMessage> mListData = new ArrayList();
-    private RecordZqRecyclerListAdapter mAdapter = new RecordZqRecyclerListAdapter(this,mListData);
+    private RecordZqRecyclerListAdapter mAdapter = new RecordZqRecyclerListAdapter(mListData);
 
     private String mToken;
     private String mUserId;

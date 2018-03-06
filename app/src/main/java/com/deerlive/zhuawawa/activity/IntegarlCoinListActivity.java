@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,7 +40,8 @@ public class IntegarlCoinListActivity extends BaseActivity {
     ImageView ivDefault;
     private String mToken;
     private ArrayList<DanmuMessage> mListData = new ArrayList();
-    private RecordCoinRecyclerListAdapter mAdapter = new RecordCoinRecyclerListAdapter(this, mListData);
+    private RecordCoinRecyclerListAdapter mAdapter = new RecordCoinRecyclerListAdapter( mListData);
+    private View notDataView;
 
 
     public void goBack(View v) {
@@ -73,6 +75,8 @@ public class IntegarlCoinListActivity extends BaseActivity {
                 getGameData(mListData.size());
             }
         });
+        notDataView = getLayoutInflater().inflate(R.layout.empty_view, (ViewGroup) mRecyclerView.getParent(), false);
+
     }
 
     private void getGameData(final int limit_begin) {
@@ -102,9 +106,6 @@ public class IntegarlCoinListActivity extends BaseActivity {
                     g.setMessageContent(t.getString("update_integration"));
                     mListData.add(g);
                 }
-                if(list.size()!=0){
-                    ivDefault.setVisibility(View.GONE);
-                }
 
                 mAdapter.notifyDataSetChanged();
             }
@@ -113,8 +114,7 @@ public class IntegarlCoinListActivity extends BaseActivity {
             public void requestFailure(int code, String msg) {
                 toast(msg);
                 if(mListData.size()==0){
-                    ivDefault.setVisibility(View.VISIBLE);
-
+                    mAdapter.setEmptyView(notDataView);
                 }
                 if (mRefreshLayout.isRefreshing()) {
                     mRefreshLayout.finishRefresh();
