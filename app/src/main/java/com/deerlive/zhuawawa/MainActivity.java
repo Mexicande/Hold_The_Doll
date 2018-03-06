@@ -274,6 +274,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
 
     public void checkUpdate() {
+
+
+
+
         Map<String,String>params=new HashMap<>();
 
             String versionCode = AppUtils.getAppVersionCode()+"";

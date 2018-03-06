@@ -122,7 +122,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 1) {
-                LogUtils.d(params.toString());
                 Api.doLogin(LoginActivity.this, params, new OnRequestDataListener() {
                     @Override
                     public void requestSuccess(int code, JSONObject data) {

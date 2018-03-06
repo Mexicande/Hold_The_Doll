@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -70,6 +71,7 @@ public class MessageActivity extends BaseActivity {
                 getGameData(mListData.size());
             }
         });
+
     }
 
     private void getGameData(final int limit_begin) {
@@ -94,7 +96,7 @@ public class MessageActivity extends BaseActivity {
                 if(mListData.size()!=0){
                     ivDefault.setVisibility(View.GONE);
                 }
-                mAdapter.addData(mListData);
+                mAdapter.setNewData(mListData);
             }
 
             @Override

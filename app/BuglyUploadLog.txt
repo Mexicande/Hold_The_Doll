@@ -30,3 +30,4 @@ E:\android\ZhuaWaWa\app\build\outputs\mapping\release\app-mapping.txt --> 479dc6
 D:\Work\Project\Hold_The_Doll\app\build\outputs\mapping\release\app-mapping.txt --> e10206b4c9ca27f61e012810b10e2fd226cfcdee
 D:\Work\Project\Hold_The_Doll\app\build\outputs\mapping\release\app-mapping.txt --> 021d508daa89323367fcdfb54c88600c48dc5a15
 /Users/apple/Documents/Project/zhuawawa/app/build/outputs/mapping/release/app-mapping.txt --> d42637f6abdc2afed075c7e82305c860a706fd95
+/Users/apple/Documents/Project/zhuawawa/app/build/outputs/mapping/release/app-mapping.txt --> a2929b74c6ee342f11d4e7ea9fe09ed03ba61bef
