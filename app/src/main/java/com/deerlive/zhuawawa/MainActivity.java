@@ -69,19 +69,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         token = SPUtils.getInstance().getString("token");
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-            View decorView = getWindow().getDecorView();
-
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-
-            decorView.setSystemUiVisibility(option);
-
-            this.getWindow().setStatusBarColor(Color.TRANSPARENT);
-
-        }
         showAdvertising();
         initGameList();
         initBanner();

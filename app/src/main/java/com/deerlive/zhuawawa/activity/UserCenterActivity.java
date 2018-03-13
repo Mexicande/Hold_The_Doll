@@ -57,26 +57,7 @@ public class UserCenterActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-            View decorView = null;
-            try {
-                decorView = getWindow().getDecorView();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-
-            if (decorView != null) {
-                decorView.setSystemUiVisibility(option);
-            }
-
-            this.getWindow().setStatusBarColor(Color.TRANSPARENT);
-
-        }
         initData();
         layoutIntegal.setOnClickListener(new View.OnClickListener() {
             @Override

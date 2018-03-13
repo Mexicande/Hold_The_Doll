@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.base.BaseActivity;
+import com.deerlive.zhuawawa.utils.LogUtils;
 import com.hss01248.dialog.StyledDialog;
 
 import java.util.HashMap;
@@ -42,8 +43,8 @@ public class WebviewActivity extends BaseActivity implements PlatformActionListe
     @SuppressLint("AddJavascriptInterface")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Bundle data = getIntent().getExtras();
         super.onCreate(savedInstanceState);
+        Bundle data = getIntent().getExtras();
         mPlatFormWeChat = ShareSDK.getPlatform(Wechat.NAME);
         mPlatFormMoment = ShareSDK.getPlatform(WechatMoments.NAME);
         mPlatFormWeChat.setPlatformActionListener(this);
@@ -137,6 +138,9 @@ public class WebviewActivity extends BaseActivity implements PlatformActionListe
         @JavascriptInterface
         public void shareToFriend(String title, String msg, String url, String imgUrl) {
             Platform.ShareParams sp = new Platform.ShareParams();
+
+            LogUtils.i("shareUrl==",url);
+
             sp.setTitle(title);
             sp.setText(msg);
             sp.setShareType(Platform.SHARE_WEBPAGE);

@@ -63,7 +63,7 @@ public class SplashActivity extends BaseActivity {
                 if(SPUtils.getInstance().contains("token")){
                     ActivityUtils.startActivity(MainActivity.class);
                 }else{
-                    ActivityUtils.startActivity(LoginActivity.class);
+                    ActivityUtils.startActivity(MainActivity.class);
                 }
                 finish();
             }

@@ -58,26 +58,7 @@ public class WeiQuListActivity extends BaseActivity implements OnRecyclerViewIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-            View decorView = null;
-            try {
-                decorView = getWindow().getDecorView();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-
-            if (decorView != null) {
-                decorView.setSystemUiVisibility(option);
-            }
-
-            this.getWindow().setStatusBarColor(Color.TRANSPARENT);
-
-        }
         tvTitle.setText(getResources().getString(R.string.wuqu_title));
         mToken = SPUtils.getInstance().getString("token");
         mRefreshLayout.autoRefresh();

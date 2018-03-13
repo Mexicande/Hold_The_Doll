@@ -32,3 +32,9 @@ D:\Work\Project\Hold_The_Doll\app\build\outputs\mapping\release\app-mapping.txt 
 /Users/apple/Documents/Project/zhuawawa/app/build/outputs/mapping/release/app-mapping.txt --> d42637f6abdc2afed075c7e82305c860a706fd95
 /Users/apple/Documents/Project/zhuawawa/app/build/outputs/mapping/release/app-mapping.txt --> a2929b74c6ee342f11d4e7ea9fe09ed03ba61bef
 /Users/apple/Documents/Project/zhuawawa/app/build/outputs/mapping/release/app-mapping.txt --> 4ac37ee1756fd3554446e4927e1428ddea8a3091
+/Users/apple/Documents/Project/zhuawawa/app/build/outputs/mapping/release/app-mapping.txt --> 74ce72c08db7cba73484d1f3b31f08a7535bb6c6
+/Users/apple/Documents/Project/zhuawawa/app/build/outputs/mapping/release/app-mapping.txt --> df2555e8e968ecfd7f0f3736ce2517e3acff825d
+/Users/apple/Documents/Project/zhuawawa/app/build/outputs/mapping/release/app-mapping.txt --> c657aee9dcb29814792bd84e44f50263ee39a785
+/Users/apple/Documents/Project/zhuawawa/app/build/outputs/mapping/release/app-mapping.txt --> 1457d1ac61c6b97ae3e6bf05dcadf8f1a38778b7
+/Users/apple/Documents/Project/zhuawawa/app/build/outputs/mapping/release/app-mapping.txt --> 0b39aa96f3f8f32531d8399a1af9a8cafbce08ff
+/Users/apple/Documents/Project/zhuawawa/app/build/outputs/mapping/release/app-mapping.txt --> 67b86549bdabe35d81eeb1bebc0240f1c55fe3ea

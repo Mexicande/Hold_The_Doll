@@ -8,9 +8,11 @@ import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.deerlive.zhuawawa.R;
 import com.deerlive.zhuawawa.utils.ToastUtils;
 import com.umeng.analytics.MobclickAgent;
 
@@ -30,25 +32,26 @@ public abstract class BaseActivity extends AppCompatActivity {
         setContentView(getLayoutResource());
         ButterKnife.bind(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            View decorView = null;
             try {
-                decorView = getWindow().getDecorView();
+                View  decorView = getWindow().getDecorView();
+                int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+
+                if (decorView != null) {
+                    decorView.setSystemUiVisibility(option);
+                }
+                this.getWindow().setStatusBarColor(Color.TRANSPARENT);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-
-            if (decorView != null) {
-                decorView.setSystemUiVisibility(option);
-            }
-
-            this.getWindow().setStatusBarColor(Color.TRANSPARENT);
 
         }
+
+
     }
+
 
     public void toast(String mes){
         ToastUtils.showShort(mes);

@@ -174,19 +174,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-            View decorView = getWindow().getDecorView();
-
-            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-
-                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-
-            decorView.setSystemUiVisibility(option);
-
-            this.getWindow().setStatusBarColor(Color.TRANSPARENT);
-
-        }
         Bundle data = getIntent().getExtras();
         if (data == null) {
             toast(getString(R.string.net_error));

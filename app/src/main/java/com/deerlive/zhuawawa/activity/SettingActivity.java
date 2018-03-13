@@ -2,7 +2,9 @@ package com.deerlive.zhuawawa.activity;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -46,6 +48,7 @@ public class SettingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         tvTitle.setText("设置");
         token = SPUtils.getInstance().getString("token");
         if ("1".equals(SPUtils.getInstance().getString("bgm"))) {
