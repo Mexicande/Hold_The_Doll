@@ -2,6 +2,7 @@ package com.deerlive.zhuawawa.activity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -52,6 +53,7 @@ import com.deerlive.zhuawawa.fragment.RecordZjFragment;
 import com.deerlive.zhuawawa.intf.OnRequestDataListener;
 import com.deerlive.zhuawawa.model.DanmuMessage;
 import com.deerlive.zhuawawa.model.DeviceAndBanner;
+import com.deerlive.zhuawawa.model.LampBean;
 import com.deerlive.zhuawawa.model.MessageType;
 import com.deerlive.zhuawawa.utils.ActivityUtils;
 import com.deerlive.zhuawawa.utils.KeyboardUtils;
@@ -62,6 +64,7 @@ import com.tencent.rtmp.ITXLivePlayListener;
 import com.tencent.rtmp.TXLivePlayer;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -91,6 +94,7 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
     private static final int IM_MSG_COMING = 105;
     private static final int UPLOAD_RECORD = 106;
     private static final int INIT_FRAME = 1000;
+    private static final int SENJION = 11;
     private static final int REQUEST_CODE = 1;//录制
     private int mLocalUid;
     private String mUsername;
@@ -167,8 +171,9 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
     private MediaPlayer mMediaPlayer;
     private HashMap<String, Integer> soundID = new HashMap<String, Integer>();
     private MediaProjectionManager mMediaProjectionManager;
-
-
+    private int mNum=0;
+    private LampBean lampBean=new LampBean();
+    private SwitchHandler mHandler=new SwitchHandler(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -310,11 +315,61 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
             public void requestSuccess(int code, JSONObject data) {
                 mChannelKey = data.getString("info");
                 initAgora();
+
             }
 
             @Override
             public void requestFailure(int code, String msg) {
                 toast(msg);
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+    /**
+     * 在线人数查询
+     *
+     */
+    private void getLamp() {
+        Map<String,String> parms=new HashMap<>();
+        parms.put("token",mToken);
+
+        Api.getLamp(this, parms, new OnRequestDataListener() {
+            @Override
+            public void requestSuccess(int code, JSONObject data) {
+
+                lampBean = JSON.parseObject(data.toString(), LampBean.class);
+
+                mPlayerNum.setText(lampBean.getRand() + getResources().getString(R.string.play_num));
+
+
+               /* DanmuMessage d = new DanmuMessage();
+                d.setUid(mLocalUid + "");
+                d.setUserName(lampBean.getTourist().get(mNum).getName());
+                d.setMessageType(MessageType.NORMAL);
+                d.setMessageContent("来了");
+                addDanmuList(d);
+
+                Message message=Message.obtain();
+                message.obj=d;
+                message.what=SENJION;*/
+                //myHandler.sendEmptyMessage(SENJION);
+               // myHandler.sendMessageDelayed(message,5000);
+
+                myHandler.sendEmptyMessageDelayed(SENJION,3000);
+
+            }
+
+            @Override
+            public void requestFailure(int code, String msg) {
+
             }
         });
     }
@@ -392,6 +447,8 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
         mDanmuList.setLayoutManager(m);
         mDanmuAdapter = new MessageRecyclerListAdapter(this, mDanmuData);
         mDanmuList.setAdapter(mDanmuAdapter);
+        getLamp();
+
     }
 
     SurfaceView remoteVideoView;
@@ -431,7 +488,6 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
         m_agoraAPI = AgoraAPIOnlySignal.getInstance(this, getResources().getString(R.string.agora_appid));
         int sdkVersion = m_agoraAPI.getSdkVersion();
 
-        log("sdkVersion=="+sdkVersion);
         if (m_agoraAPI.isOnline() == 0) {
             m_agoraAPI.login2(getResources().getString(R.string.agora_appid), mLocalUid + "", mSignalKey, 0, "", 5, 5);
         } else {
@@ -639,6 +695,29 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
         }
     }
 
+    private static class SwitchHandler extends Handler {
+        private WeakReference<PlayerActivity> mWeakReference;
+
+        SwitchHandler(PlayerActivity activity) {
+            mWeakReference = new WeakReference<PlayerActivity>(activity);
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            PlayerActivity activity = mWeakReference.get();
+            if (activity != null) {
+                switch (msg.what) {
+                    case REQUEST_CODE:
+                        activity.myHandler.sendEmptyMessageDelayed(SENJION,3000);
+                        break;
+
+                }
+            }
+
+        }
+    }
+
+
+
     RecordZjFragment rf;
     public void showRecord(View v) {
 
@@ -721,6 +800,9 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
+
+        myHandler.removeMessages(SENJION);
+        myHandler.removeCallbacksAndMessages(null);
         //closeRecord();
     }
 
@@ -750,15 +832,33 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
                     initAgoraIm();
                     break;
                 case IM_ONLINE_NUM:
-                    mPlayerNum.setText(mOnlineNum + getResources().getString(R.string.play_num));
+                   // mPlayerNum.setText(mOnlineNum + getResources().getString(R.string.play_num));
                     break;
                 case IM_ONLINE_LEAVE:
-                    mPlayerNum.setText((mOnlineNum--) + getResources().getString(R.string.play_num));
+                   // mPlayerNum.setText((mOnlineNum--) + getResources().getString(R.string.play_num));
                     break;
                 case IM_ONLINE_JOIN:
-                    mPlayerNum.setText((mOnlineNum++) + getResources().getString(R.string.play_num));
+                   // mPlayerNum.setText(String.valueOf(mNum++));
+                    //mPlayerNum.setText((mOnlineNum++) + getResources().getString(R.string.play_num));
                     break;
                 case UPLOAD_RECORD:
+                    //uploadRecord();
+                    break;
+                case SENJION:
+                    if(lampBean.getTourist()!=null||lampBean.getTourist().size()<mNum){
+                        DanmuMessage d = new DanmuMessage();
+                        d.setUid(mLocalUid + "");
+                        d.setUserName(lampBean.getTourist().get(mNum).getName());
+                        d.setMessageType(MessageType.NORMAL);
+                        d.setMessageContent("来了");
+                        addDanmuList(d);
+                        mNum++;
+                        mHandler.sendEmptyMessage(REQUEST_CODE);
+                    }else {
+                        myHandler.removeMessages(SENJION);
+                    }
+
+
                     //uploadRecord();
                     break;
                 case IM_MSG://收到广播消息
@@ -774,11 +874,9 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
                                 break;
                             case MessageType.GAME_NO:
                                 meiZhuazhu(j);
-
                                 break;
                             case MessageType.GAME_OK:
                                 zhuaZhu(j);
-
                                 break;
                             case MessageType.GAME_DISCONNECTTED:
                                 mCaozuoContainer.setVisibility(View.GONE);
@@ -1169,8 +1267,14 @@ public class PlayerActivity extends BaseActivity implements View.OnTouchListener
     public void onPause() {
         super.onPause();
        // closeRecord();
+        myHandler.removeMessages(SENJION);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        myHandler.removeMessages(SENJION);
+    }
 
   /*  File file = null;//录制的文件名
 

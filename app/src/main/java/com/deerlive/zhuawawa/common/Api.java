@@ -29,9 +29,9 @@ import java.util.Map;
  * Author: XuDeLong
  */
 public class Api {
-    public static final String APP_VER = AppUtils.getAppVersionCode()+"";
+    public static final String APP_VER = AppUtils.getAppVersionName();
     //public static final String HOST = "http://kuailai.deerlive.com/";
-    public static final String HOST = "http://doll.anwenqianbao.com/";
+    public static final String HOST = "http://test.doll.anwenqianbao.com/";
     public static final String OS = "android";
     public static final String QUDAO = "kuailai-one";
 
@@ -54,6 +54,9 @@ public class Api {
     public static final String URL_GAME_ABOUT = HOST + "/portal/appweb/about_us?qudao="+QUDAO;
     //协议
     public static final String URL_GAME_XIEYI = HOST + "portal/page/index/id/2?qudao="+QUDAO;
+
+    //查询在线人数/跑马灯
+    public static final String GET_LAMP=HOST+"Api/SiSi/getLamp";
 
     private static final String CHECK_UPDATE = HOST + "Api/SiSi/checkAndroidVer";
     private static final String ENTER_PLAYER = HOST + "Api/SiSi/enterDeviceRoom";
@@ -116,6 +119,9 @@ public class Api {
     }
     public static void beginPay(final Context context, Map<String, String> params, final OnRequestDataListener listener) {
         newExcuteMapPost(BEGIN_PAY, context, params,listener);
+    }
+    public static void getLamp(final Context context, Map<String, String> params, final OnRequestDataListener listener) {
+        newExcuteMapPost(GET_LAMP, context, params,listener);
     }
 
     //积分商城商品
